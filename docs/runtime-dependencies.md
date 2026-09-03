@@ -1,9 +1,7 @@
 # Runtime Dependencies
 
-Runtime dependencies belong to the adapter package when its implemented operations require them.
+Unlike a pure file-to-file adapter, the initial COSMOS verification projector intentionally uses the OrbitFabric Scenario loader at runtime so that Scenario semantics are interpreted by the Core implementation that owns them.
 
-Do not assume that OrbitFabric Core is present inside the adapter managed environment merely because Adapter Manager launched the installation.
+The Python package therefore declares the exact current OrbitFabric Core development baseline as a runtime dependency while the adapter contract remains candidate-level.
 
-The dummy adapter deliberately does not import the OrbitFabric Python package at runtime. It consumes only public machine-readable files and therefore declares only its actual Python runtime dependencies.
-
-A real adapter that intentionally uses an OrbitFabric runtime API must declare a compatible OrbitFabric dependency and document why that API dependency is required.
+OpenC3 COSMOS itself is not imported by the adapter during projection. The adapter generates COSMOS-native artifacts; downstream execution remains target-owned.

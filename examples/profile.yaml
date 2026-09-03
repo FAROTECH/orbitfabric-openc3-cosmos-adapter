@@ -1,19 +1,29 @@
 kind: orbitfabric.projection_profile
 profile_version: 0.1-candidate
 profile:
-  id: dummy-example
+  id: openc3-cosmos-demo-3u
   version: 0.1.0
-  description: Minimal profile used by the executable adapter template.
+  description: COSMOS verification mapping used by the canonical adapter smoke path.
 integration:
-  id: orbitfabric-dummy
+  id: orbitfabric-openc3-cosmos
   schema_version: 0.1-candidate
 settings:
-  target_prefix: DUMMY_
+  target_name: OFDEMO
+  telemetry_wait_timeout_s: 5
 bindings:
-  - id: telemetry.battery_voltage
+  - id: cmd.stop_acquisition
+    intent: project
+    sources:
+      - domain: commands
+        id: payload.stop_acquisition
+    config:
+      cosmos_command: STOP_ACQUISITION
+  - id: tm.acquisition_active
     intent: project
     sources:
       - domain: telemetry
-        id: eps.battery.voltage
+        id: payload.acquisition.active
     config:
-      target_name: BATTERY_VOLTAGE
+      cosmos_packet: STATUS
+      cosmos_item: ACQUISITION_ACTIVE
+      value_encoding: boolean_01

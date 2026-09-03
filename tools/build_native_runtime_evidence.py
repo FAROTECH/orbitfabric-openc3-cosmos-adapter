@@ -8,6 +8,10 @@ from typing import Any
 
 EVIDENCE_KIND = "orbitfabric.openc3_cosmos.native_runtime_evidence"
 EVIDENCE_VERSION = "0.1-candidate"
+EXPECTED_ADAPTER_ID = "orbitfabric-openc3-cosmos"
+EXPECTED_COSMOS_VERSION = "v7.3.0"
+EXPECTED_COSMOS_PROJECT_COMMIT = "9eb454f06fe0113d05aa6945d88b627155a2aa47"
+EXPECTED_FIXTURE_TARGET = "OFDEMO"
 
 
 def sha256_file(path: Path) -> str:
@@ -58,12 +62,24 @@ def build_evidence(
         raise ValueError("Integration Result is not succeeded")
     if result.get("operation", {}).get("id") != "verification_projection":
         raise ValueError("Integration Result operation is not verification_projection")
+    if result.get("adapter", {}).get("id") != EXPECTED_ADAPTER_ID:
+        raise ValueError("Integration Result adapter identity is not canonical")
     if plan.get("status") != "executable_subset":
         raise ValueError("Verification Projection Plan is not executable_subset")
-    if plan.get("target", {}).get("baseline") != "v7.3.0":
+    if plan.get("integration", {}).get("id") != EXPECTED_ADAPTER_ID:
+        raise ValueError("Verification Projection Plan integration identity is not canonical")
+    if plan.get("target", {}).get("baseline") != EXPECTED_COSMOS_VERSION:
         raise ValueError("Verification Projection Plan does not target COSMOS v7.3.0")
-    if plan.get("target", {}).get("target_name") != "OFDEMO":
+    if plan.get("target", {}).get("target_name") != EXPECTED_FIXTURE_TARGET:
         raise ValueError("Verification Projection Plan does not target OFDEMO fixture")
+    if baseline.get("cosmos_version") != EXPECTED_COSMOS_VERSION:
+        raise ValueError("runtime baseline does not identify COSMOS v7.3.0")
+    if baseline.get("cosmos_project_commit") != EXPECTED_COSMOS_PROJECT_COMMIT:
+        raise ValueError("runtime baseline COSMOS project commit is not the validated pin")
+
+    source_commit = baseline.get("adapter_source_commit")
+    if not isinstance(source_commit, str) or len(source_commit) != 40:
+        raise ValueError("runtime baseline adapter_source_commit is missing or malformed")
 
     summary = ctrf.get("results", {}).get("summary")
     if not isinstance(summary, dict):
@@ -102,7 +118,7 @@ def build_evidence(
         "adapter": {
             "id": result["adapter"]["id"],
             "version": result["adapter"]["version"],
-            "source_commit": baseline["adapter_source_commit"],
+            "source_commit": source_commit,
             "wheel_sha256": sha256_file(wheel_path),
         },
         "source": {
@@ -137,7 +153,7 @@ def build_evidence(
             "ecosystem": "OpenC3 COSMOS",
             "cosmos_version": baseline["cosmos_version"],
             "cosmos_project_commit": baseline["cosmos_project_commit"],
-            "fixture_target": "OFDEMO",
+            "fixture_target": EXPECTED_FIXTURE_TARGET,
             "plugin_version": baseline["plugin_version"],
             "simulator_host": baseline["simulator_host"],
         },

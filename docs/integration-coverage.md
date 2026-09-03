@@ -42,6 +42,8 @@ Applicable Surface Coverage
     how broadly does the release cover the semantics that could make sense for COSMOS?
 ```
 
+The README intentionally presents the complete matrix in a compact four-column product view. The file under `coverage/` remains the detailed engineering declaration with target applicability, scope, evidence and roadmap columns.
+
 ## Dispositions
 
 The matrix uses:

@@ -69,7 +69,17 @@ The adapter does not promote COSMOS-specific plan or runtime semantics into Orbi
 
 The `0.1.0.dev0` product baseline is under active development. Product code is extracted from the historical PoC deliberately, without importing experiment/G6/G9 scaffolding as permanent product structure.
 
-Integration Coverage is a release-readiness obligation and is tracked separately in `FAROTECH/OrbitFabric-Architecture-Lab#22`; it is intentionally not a bootstrap blocker.
+Integration Coverage is complete for the current 21-area semantic inventory. The declared initial scope contains no known `NOT_IMPLEMENTED` hole.
+
+A canonical native COSMOS runtime acceptance harness is available at:
+
+```text
+tools/run_native_cosmos_acceptance.sh
+```
+
+The harness builds and installs the adapter wheel, generates the canonical verification artifacts, runs them through a pinned COSMOS `v7.3.0` runtime against the external `OFDEMO` fixture, validates CTRF, and joins runtime provenance into adapter-owned evidence. See [Native OpenC3 COSMOS Acceptance](docs/native-cosmos-acceptance.md).
+
+The harness is intentionally not a mandatory GitHub-hosted CI job because the external host/container topology is environment-dependent. A real native PASS from the canonical harness remains a release-readiness gate; hosted CI does not claim that runtime evidence.
 
 ## Reference baselines
 

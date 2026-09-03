@@ -1,0 +1,16 @@
+VARIABLE ofdemo_target_name OFDEMO
+  VARIABLE_DESCRIPTION "COSMOS target name for the OrbitFabric canonical native acceptance fixture"
+
+VARIABLE ofdemo_host __OFDEMO_HOST__
+  VARIABLE_DESCRIPTION "Host running the external OFDEMO target simulator"
+
+VARIABLE ofdemo_cmd_port 18080
+  VARIABLE_DESCRIPTION "TCP port used by COSMOS to send OFDEMO commands"
+
+VARIABLE ofdemo_tlm_port 18081
+  VARIABLE_DESCRIPTION "TCP port used by COSMOS to receive OFDEMO telemetry"
+
+TARGET OFDEMO <%= ofdemo_target_name %>
+
+INTERFACE <%= ofdemo_target_name %>_INT openc3/interfaces/tcpip_client_interface.py <%= ofdemo_host %> <%= ofdemo_cmd_port %> <%= ofdemo_tlm_port %> 5.0 None BURST
+  MAP_TARGET <%= ofdemo_target_name %>

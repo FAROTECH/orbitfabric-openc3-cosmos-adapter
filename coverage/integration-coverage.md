@@ -70,9 +70,9 @@ If claimed, how completely is that claim implemented and evidenced?
 | Relationship Manifest as a direct projection surface | no | no independent COSMOS relationship-graph artifact is owned by this adapter | out of scope | NOT_APPLICABLE | Relationship Manifest remains a required Core coherence surface; the current adapter does not manufacture a second target relationship graph | reassess only if a downstream-native relationship representation becomes part of scope |
 | Scenario validation and provenance | yes | exact Core `ScenarioLoader` validation plus Verification Projection Plan provenance | in scope | FULL | Scenario semantics are validated by Core; mission identity/model version are cross-checked with the consumed Integration Input Set; Scenario digest is retained in plan and Result | complete for current operation contract |
 | Scenario step ordering and `t` semantics | yes | generated Python statement order plus plan `scenario_t` provenance | in scope | PARTIAL | Source order and each `t` value are preserved for provenance, but `t` is deliberately **not** converted into real waits, scheduling or wall-clock behavior without explicit target policy | retain distinction; add timing only through reviewed target-owned policy |
-| Scenario command action without arguments | yes | COSMOS `cmd()` with Profile-resolved target/command naming | in scope | FULL | Canonical smoke path generates and syntax-validates `cmd(...)`; historical native PoC acceptance proves the equivalent command lane through real COSMOS transport | complete for initial no-argument subset |
+| Scenario command action without arguments | yes | COSMOS `cmd()` with Profile-resolved target/command naming | in scope | FULL | Canonical smoke path generates and syntax-validates `cmd(...)`; historical native PoC acceptance proves the equivalent command lane through real COSMOS transport; canonical runtime harness is now product-owned but requires a clean native PASS before release freeze | execute canonical native acceptance before Ground baseline freeze |
 | Scenario command arguments | yes | COSMOS command argument encoding | out of scope | OUT_OF_SCOPE | The projector blocks commands with arguments instead of inventing target encoding | define explicit target argument encoder before adding to declared scope |
-| Scenario telemetry expectation | yes | COSMOS `wait_check()` with Profile-resolved packet/item, encoding and timeout | in scope | FULL | Canonical smoke path materializes `wait_check(...)`; `boolean_01` and scalar identity encoding are explicit; missing bindings fail closed | complete for current Profile vocabulary |
+| Scenario telemetry expectation | yes | COSMOS `wait_check()` with Profile-resolved packet/item, encoding and timeout | in scope | FULL | Canonical smoke path materializes `wait_check(...)`; `boolean_01` and scalar identity encoding are explicit; missing bindings fail closed; canonical runtime harness targets the same generated observation path | execute canonical native acceptance before Ground baseline freeze |
 | Scenario telemetry injection | yes | target/simulator-specific write or injection mechanisms | out of scope | OUT_OF_SCOPE | OrbitFabric telemetry mutation is not assumed equivalent to a COSMOS simulator/target input without an explicit mapping | design target injection contract before adding scope |
 | Scenario event expectation | yes | target log/event/telemetry observation | out of scope | OUT_OF_SCOPE | Current operation records event expectation as `not_projected`; no event observability binding is defined | design event observation mapping before adding scope |
 | Scenario mode expectation | yes | target telemetry/state observation | out of scope | OUT_OF_SCOPE | Current operation records mode expectation as `not_projected`; no target mode observation mapping is defined | design mode observation mapping before adding scope |
@@ -129,6 +129,33 @@ generated imports against the validated target source baseline
 
 This hosted CI control is intentionally a target source/API compatibility gate. It does **not** claim live TCP command/telemetry execution or CTRF acceptance.
 
+### Canonical native COSMOS acceptance harness
+
+The product repository now owns a reproducible native runtime harness:
+
+```text
+tools/run_native_cosmos_acceptance.sh
+```
+
+It is designed to prove, in one clean exact source commit:
+
+```text
+canonical wheel build and isolated installation
+canonical Core Input Set + Scenario projection
+use of the exact generated verification.py / verification_suite.py artifacts
+native COSMOS plugin generation / build / validation / load
+external OFDEMO command and telemetry TCP path
+native Script Runner execution
+one-test CTRF PASS
+adapter-owned joined runtime evidence
+```
+
+The harness itself is covered by normal CI for shell syntax, fixture identity, fail-closed CTRF parsing and joined-evidence construction.
+
+**Runtime status:** harness implemented; canonical native PASS evidence is still required before the first Ground reference baseline is frozen.
+
+The full runtime is intentionally not added to mandatory GitHub-hosted CI while the required host/container topology remains environment-dependent.
+
 ### Historical native COSMOS runtime evidence
 
 The historical `FAROTECH/OrbitFabric-OpenC3-COSMOS-PoC` remains engineering evidence and regression reference.
@@ -146,7 +173,7 @@ machine-readable CTRF PASS evidence
 joined provenance back to Scenario, Core inputs, Profile and projected operations
 ```
 
-This evidence supports the semantic feasibility of the current command + telemetry-expectation lane, but it is **not** silently promoted into canonical release evidence. The product repository must retain its own explicit release-readiness boundary.
+This evidence supports the semantic feasibility of the current command + telemetry-expectation lane, but it is **not** silently promoted into canonical release evidence.
 
 ### Adapter Manager lifecycle and release evidence
 
@@ -227,19 +254,24 @@ Later versions may widen one semantic family at a time. Each addition should fir
 
 ## Release-readiness implication
 
-Integration Coverage itself is complete for this baseline, but the matrix exposes one separate release-readiness question:
+Integration Coverage itself is complete for this baseline. The architecture decision exposed by the matrix has also been resolved: the canonical repository **does** carry a native runtime acceptance harness/evidence path.
+
+The remaining release-readiness gate is to execute that harness against one clean exact canonical adapter commit in a topology that supports the external `OFDEMO` simulator and retain the resulting PASS evidence.
+
+Required canonical native evidence is:
 
 ```text
-Historical PoC
-    has full local native COSMOS TCP / telemetry / Script Runner / CTRF acceptance.
-
-Canonical adapter
-    has hosted exact-baseline source/API compatibility and lifecycle proof.
+real COSMOS plugin build / validation / load
+real command transport to OFDEMO
+real telemetry transport / decommutation back into COSMOS
+native Script Runner execution
+exactly one CTRF PASS
+joined runtime evidence tied to the adapter commit and wheel
 ```
 
-Before freezing the first canonical Ground reference adapter baseline, decide explicitly whether to port a reproducible **canonical native runtime acceptance** harness/evidence path into this repository.
+Until that PASS exists, hosted source/API compatibility must not be described as full native runtime acceptance.
 
-That is a target evidence decision, not a reason to widen OrbitFabric semantic scope.
+That is a target evidence gate, not a reason to widen OrbitFabric semantic scope.
 
 ## Policy note
 

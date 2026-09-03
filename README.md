@@ -4,13 +4,13 @@ Canonical OrbitFabric adapter for projecting selected mission verification inten
 
 OrbitFabric and OpenC3 COSMOS remain independent systems. OrbitFabric Core owns generic mission and integration contracts, this adapter owns COSMOS-specific projection, and COSMOS owns downstream execution semantics and runtime behavior.
 
-> **Product status:** `0.1.0.dev0` is the active productization baseline. Canonical native COSMOS acceptance has passed on exact adapter commit `44915686358da7334540d4fa1aca9e204d8a4ac9` against OpenC3 COSMOS `v7.3.0`. Stable release publication and post-publication greenfield acceptance are separate lifecycle gates and are not yet claimed.
+> **Release status:** source version `0.1.0` is the stable release-preparation baseline. It is not yet an immutable published `v0.1.0` release. Canonical native COSMOS acceptance previously passed on exact candidate commit `44915686358da7334540d4fa1aca9e204d8a4ac9`; before tagging it must be repeated on the exact accepted stable main commit.
 
 ## Choose your path
 
 ### I want to use the adapter
 
-The intended normal consumer lifecycle is through **OrbitFabric Adapter Manager** once a stable release is published.
+The intended normal consumer lifecycle is through **OrbitFabric Adapter Manager** once the stable release is published.
 
 ```text
 OrbitFabric Core
@@ -27,7 +27,7 @@ Start with **[Getting Started](docs/getting-started.md)**.
 
 ### I want to try the adapter
 
-The repository now contains one focused consumer-facing product example:
+The repository contains one focused consumer-facing product example:
 
 **[Scenario Verification Projection](examples/01-scenario-verification-projection/README.md)**
 
@@ -62,9 +62,9 @@ Start with **[Developer / Contributor Guide](docs/development.md)** and [CONTRIB
 Release construction is a separate maintainer and publisher responsibility:
 
 ```text
-accepted source commit
-    -> exact version tag
-    -> wheel
+accepted stable source commit
+    -> exact v0.1.0 tag
+    -> definitive wheel
     -> adapter-release.json
     -> SHA256SUMS
     -> local proof
@@ -75,11 +75,11 @@ accepted source commit
 
 A normal consumer must not need to perform these steps.
 
-Start with **[Maintainer / Publisher Guide](docs/publishing.md)** and [Release Lifecycle](docs/release-lifecycle.md).
+Start with **[Maintainer / Publisher Guide](docs/publishing.md)** and [Release Readiness Checklist](docs/adapter-readiness-checklist.md).
 
 ## What the adapter does
 
-The current product baseline:
+The `0.1.0` product baseline:
 
 - consumes a coherent OrbitFabric Core Integration Input Set;
 - validates an OpenC3 COSMOS-specific Projection Profile;
@@ -178,7 +178,7 @@ OrbitFabric Semantic Surface
         -> Adapter Declared Scope
 ```
 
-Current `0.1.0.dev0` summary:
+Current `0.1.0` summary:
 
 ```text
 Analyzed semantic areas:              21 / 21
@@ -215,9 +215,9 @@ The current declared scope therefore contains **no known `NOT_IMPLEMENTED` hole*
 | Relationship Manifest as a direct projection surface | No independent COSMOS relationship-graph artifact | `NOT_APPLICABLE` | Relationship Manifest remains a Core coherence surface rather than a target artifact |
 | Scenario validation and provenance | Core `ScenarioLoader` plus Verification Projection Plan provenance | `FULL` | Scenario semantics are Core-validated and source identity is retained |
 | Scenario step ordering and `t` semantics | Generated Python statement order plus `scenario_t` provenance | `PARTIAL` | Order and `t` are preserved, but `t` is not converted into real waits or wall-clock scheduling |
-| Scenario command action without arguments | Native COSMOS `cmd()` | `FULL` | Profile-resolved command mapping is implemented and native runtime accepted |
+| Scenario command action without arguments | Native COSMOS `cmd()` | `FULL` | Profile-resolved command mapping is implemented and native runtime accepted on the candidate baseline |
 | Scenario command arguments | COSMOS command argument encoding | `OUT_OF_SCOPE` | Commands with arguments fail closed until an explicit target encoder exists |
-| Scenario telemetry expectation | Native COSMOS `wait_check()` | `FULL` | Profile-resolved telemetry binding, encoding and timeout are implemented and native runtime accepted |
+| Scenario telemetry expectation | Native COSMOS `wait_check()` | `FULL` | Profile-resolved telemetry binding, encoding and timeout are implemented and native runtime accepted on the candidate baseline |
 | Scenario telemetry injection | Target or simulator-specific injection mechanisms | `OUT_OF_SCOPE` | OrbitFabric telemetry mutation is not assumed equivalent to COSMOS injection |
 | Scenario event expectation | COSMOS log/event/telemetry observation | `OUT_OF_SCOPE` | No event observability binding is currently defined |
 | Scenario mode expectation | COSMOS telemetry/state observation | `OUT_OF_SCOPE` | No target mode observation binding is currently defined |
@@ -250,7 +250,7 @@ Changing a pinned downstream baseline is an evidence change, not a documentation
 
 ## Validation model
 
-The source baseline is accepted through independent evidence layers:
+The stable source baseline is accepted through independent evidence layers:
 
 ```text
 Core contract conformance
@@ -276,7 +276,7 @@ tools/run_native_cosmos_acceptance.sh
 
 builds the adapter wheel, generates the exact canonical projection, starts pinned COSMOS `v7.3.0`, loads the `OFDEMO` fixture plugin, executes the generated Suite through native Script Runner, retrieves the persisted native report, converts it with OpenC3's CTRF implementation and joins runtime provenance into adapter-owned evidence.
 
-Accepted local native evidence on commit `44915686358da7334540d4fa1aca9e204d8a4ac9` proved:
+Candidate native evidence on commit `44915686358da7334540d4fa1aca9e204d8a4ac9` proved:
 
 ```text
 STOP_ACQUISITION command received by the external target
@@ -286,7 +286,7 @@ CTRF tests 1 / passed 1 / failed 0
 joined native-runtime-evidence status passed
 ```
 
-The full runtime harness is intentionally not claimed as a mandatory GitHub-hosted CI job while its external host/container topology remains environment-dependent.
+The exact stable main source commit must repeat this acceptance before `v0.1.0` tagging. The full runtime harness remains intentionally separate from mandatory GitHub-hosted CI while its external host/container topology remains environment-dependent.
 
 ## Product identity
 
@@ -297,7 +297,8 @@ python package   orbitfabric_openc3_cosmos_adapter
 console command  orbitfabric-openc3-cosmos
 adapter.id       orbitfabric-openc3-cosmos
 integration.id   orbitfabric-openc3-cosmos
-version          0.1.0.dev0
+logical key      orbitfabric/openc3-cosmos
+version          0.1.0
 ```
 
 ## Repository structure
@@ -349,6 +350,7 @@ tools/
 ### Maintainer / Publisher
 
 - [Maintainer / Publisher Guide](docs/publishing.md)
+- [Release Readiness Checklist](docs/adapter-readiness-checklist.md)
 - [Release Lifecycle](docs/release-lifecycle.md)
 - [Native OpenC3 COSMOS Acceptance](docs/native-cosmos-acceptance.md)
 - [Evidence and Traceability](docs/evidence-and-traceability.md)

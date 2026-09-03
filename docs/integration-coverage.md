@@ -62,7 +62,7 @@ NOT_ANALYZED
 
 `TARGET_UNSUPPORTED` is reserved for a semantic mismatch demonstrated by analysis rather than unfinished implementation.
 
-## Current `0.1.0.dev0` summary
+## Current `0.1.0` summary
 
 ```text
 Total rows:                         21
@@ -117,6 +117,7 @@ Canonical adapter CI
     exact COSMOS v7.3.0 source/API compatibility
     generated Python syntax
     Adapter Manager installed lifecycle
+    consumer product example
     provider-neutral release proof
 
 Canonical native acceptance harness
@@ -126,15 +127,11 @@ Canonical native acceptance harness
     persistent Script Runner completion
     persisted native report -> OpenC3 CTRF conversion
     joined adapter-owned runtime evidence
-
-Historical COSMOS PoC
-    previous native v7.3.0 runtime evidence
-    retained as engineering evidence and regression reference
 ```
 
 ## Canonical native acceptance status
 
-The product-owned native harness has now produced a clean PASS on exact adapter commit:
+The product-owned native harness produced a clean PASS on candidate adapter commit:
 
 ```text
 44915686358da7334540d4fa1aca9e204d8a4ac9
@@ -147,29 +144,11 @@ OpenC3 COSMOS  v7.3.0
 cosmos-project 9eb454f06fe0113d05aa6945d88b627155a2aa47
 ```
 
-The accepted run proved in one execution:
+That run proved real command and telemetry transport, native Script Runner completion, persisted native report conversion and CTRF 1 / 1 PASS.
 
-```text
-real STOP_ACQUISITION transport to the external OFDEMO target
-real STATUS telemetry return with acquisition_active=false
-native COSMOS Script Runner state completed
-persisted native Script Runner report
-OpenC3-native report -> CTRF conversion
-CTRF tests 1 / passed 1 / failed 0
-joined native-runtime-evidence status passed
-```
+The stable release gate now requires the same native acceptance on the exact accepted `0.1.0` main source commit after release-preparation merge.
 
-The full runtime remains intentionally separate from mandatory GitHub-hosted CI while the required host/container topology is environment-dependent. Hosted CI proves source/API compatibility; the native harness proves the target runtime claim.
-
-Historical PoC evidence remains useful as regression evidence but is not substituted for this canonical product-owned acceptance.
-
-## Release-readiness implication
-
-Integration Coverage analysis is complete for the current baseline and the canonical native runtime path has passed on the current candidate source commit.
-
-Before release freeze, the same native acceptance must be repeated against the exact accepted source commit after merge so release evidence is tied to the source that will actually be published.
-
-This is an evidence and provenance gate, not a reason to widen the semantic scope.
+This is a provenance gate, not a semantic coverage gap.
 
 ## Evidence rule
 

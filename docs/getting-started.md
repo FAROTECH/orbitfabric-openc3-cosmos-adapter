@@ -4,7 +4,7 @@ This page describes the **consumer** path.
 
 The normal OrbitFabric user installs a released adapter through Adapter Manager and executes it through Core. Editable source installs and the direct adapter CLI belong to the contributor workflow documented in [Development](development.md).
 
-> `0.1.0.dev0` is still a development baseline. The commands below describe the managed consumer lifecycle that permanent CI already proves and that the first stable release will expose through published release assets.
+> The source is prepared as version `0.1.0`, but `v0.1.0` publication is not yet claimed. Until the immutable release exists, the commands below describe the managed lifecycle already proven by CI and the path that published release assets will expose.
 
 ## 1. Install OrbitFabric Core
 
@@ -18,10 +18,10 @@ The current adapter baseline is validated against exact Core commit:
 
 ## 2. Obtain adapter release assets
 
-A stable release will provide at least:
+The stable release membership is:
 
 ```text
-orbitfabric_openc3_cosmos_adapter-<version>-py3-none-any.whl
+orbitfabric_openc3_cosmos_adapter-0.1.0-py3-none-any.whl
 adapter-release.json
 SHA256SUMS
 ```
@@ -36,7 +36,7 @@ Verify the descriptor digest and install the exact wheel:
 DESCRIPTOR_SHA256="$(sha256sum adapter-release.json | awk '{print $1}')"
 
 orbitfabric adapter install adapter-release.json \
-  --artifact orbitfabric_openc3_cosmos_adapter-<version>-py3-none-any.whl \
+  --artifact orbitfabric_openc3_cosmos_adapter-0.1.0-py3-none-any.whl \
   --descriptor-sha256 "$DESCRIPTOR_SHA256" \
   --json > install.json
 ```

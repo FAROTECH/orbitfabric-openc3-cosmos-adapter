@@ -1,0 +1,12 @@
+{
+  "findings": [],
+  "kind": "orbitfabric-lint",
+  "mission": "dummy-mission",
+  "result": "passed",
+  "summary": {
+    "errors": 0,
+    "infos": 0,
+    "warnings": 0
+  },
+  "version": "1.2.0"
+}

@@ -1,0 +1,11 @@
+scenario:
+  id: dummy_battery_check
+  name: Dummy battery check
+  description: Minimal scenario input used to demonstrate operation input provenance.
+mission:
+  path: ../dummy-mission
+initial_state:
+  mode: NOMINAL
+steps:
+  - t: 0
+    expect_mode: NOMINAL

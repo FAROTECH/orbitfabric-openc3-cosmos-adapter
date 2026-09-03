@@ -1,0 +1,140 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+jobs:
+  checks:
+    strategy:
+      matrix:
+        python-version:
+          - "3.11"
+          - "3.12"
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install template and tools
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -e ".[dev]"
+
+      - name: Install exact OrbitFabric Core conformance baseline
+        run: |
+          python -m pip install "orbitfabric @ git+https://github.com/FAROTECH/orbitfabric.git@4377d6656c62aa1dc19a7ed81d2de872b6b22ccd"
+
+      - name: Ruff
+        run: ruff check .
+
+      - name: Template consistency
+        run: python tools/check_template_consistency.py
+
+      - name: Tests
+        run: pytest -q
+
+      - name: Build wheel
+        run: python -m build --wheel
+
+      - name: Verify wheel owns required packaged assets
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import zipfile
+
+          wheel = next(Path("dist").glob("*.whl"))
+          with zipfile.ZipFile(wheel) as archive:
+              names = set(archive.namelist())
+          required = {
+              "orbitfabric_dummy_adapter/integration_package.json",
+              "orbitfabric_dummy_adapter/schemas/profile-0.1.schema.json",
+          }
+          missing = sorted(required - names)
+          if missing:
+              raise SystemExit("Missing wheel assets: " + ", ".join(missing))
+          PY
+
+      - name: Build documentation
+        run: mkdocs build --strict
+
+  installed-lifecycle:
+    needs: checks
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Template
+        uses: actions/checkout@v4
+
+      - name: Checkout exact OrbitFabric Core baseline
+        uses: actions/checkout@v4
+        with:
+          repository: FAROTECH/orbitfabric
+          ref: 4377d6656c62aa1dc19a7ed81d2de872b6b22ccd
+          path: _orbitfabric_core
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install host tooling and exact Core baseline
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install build
+          python -m pip install ./_orbitfabric_core
+
+      - name: Run installed lifecycle control
+        run: bash .github/scripts/installed-lifecycle.sh
+
+      - name: Upload installed lifecycle evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: adapter-template-installed-lifecycle
+          path: /tmp/orbitfabric-template-installed-lifecycle/evidence
+          if-no-files-found: warn
+
+  release-proof:
+    needs: installed-lifecycle
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Template
+        uses: actions/checkout@v4
+
+      - name: Checkout exact OrbitFabric Core baseline
+        uses: actions/checkout@v4
+        with:
+          repository: FAROTECH/orbitfabric
+          ref: 4377d6656c62aa1dc19a7ed81d2de872b6b22ccd
+          path: _orbitfabric_core
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install host tooling and exact Core baseline
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install build
+          python -m pip install ./_orbitfabric_core
+
+      - name: Run provider-neutral release proof
+        run: bash .github/scripts/release-proof.sh
+
+      - name: Upload release proof evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: adapter-template-release-proof
+          path: /tmp/orbitfabric-template-release-proof/evidence
+          if-no-files-found: warn

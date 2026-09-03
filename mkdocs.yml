@@ -1,0 +1,55 @@
+site_name: OrbitFabric Adapter Developer Template
+site_description: Developer guide for building, testing, packaging and releasing OrbitFabric adapters.
+site_url: https://farotech.github.io/orbitfabric-adapter-template/
+repo_url: https://github.com/FAROTECH/orbitfabric-adapter-template
+repo_name: FAROTECH/orbitfabric-adapter-template
+edit_uri: ""
+
+docs_dir: docs
+
+theme:
+  name: material
+  language: en
+  icon:
+    repo: fontawesome/brands/github
+  features:
+    - navigation.instant
+    - navigation.instant.progress
+    - navigation.sections
+    - navigation.top
+    - navigation.tracking
+    - toc.follow
+    - search.suggest
+    - search.highlight
+    - content.code.copy
+
+plugins:
+  - search
+
+markdown_extensions:
+  - admonition
+  - attr_list
+  - md_in_html
+  - toc:
+      permalink: true
+  - pymdownx.details
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.superfences
+
+nav:
+  - Home: index.md
+  - Getting Started: getting-started.md
+  - Repository Anatomy: repository-anatomy.md
+  - Adapter Identity: adapter-identity.md
+  - Architecture and Ownership: architecture-and-ownership.md
+  - Integration Contracts: integration-contracts.md
+  - Projection Profile and Bindings: projection-profile-and-bindings.md
+  - Testing and Conformance: testing-and-conformance.md
+  - Evidence and Traceability: evidence-and-traceability.md
+  - Runtime Dependencies: runtime-dependencies.md
+  - Release Lifecycle: release-lifecycle.md
+  - Integration Coverage: integration-coverage.md
+  - Adapter Readiness Checklist: adapter-readiness-checklist.md
+  - Migrating from a PoC: migrating-from-poc.md

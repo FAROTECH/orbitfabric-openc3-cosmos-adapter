@@ -1,0 +1,64 @@
+{
+  "input_set_sha256": "2a10a3be8f4c1df9210a6a1a41f2fd7f32ed5fd3bcfb80eb9e56f3108610bd5a",
+  "input_set_version": "0.1-candidate",
+  "kind": "orbitfabric.integration_input_set",
+  "lint_result": "passed",
+  "load_result": "loaded",
+  "mission": {
+    "id": "dummy-mission",
+    "model_version": "0.1.0"
+  },
+  "orbitfabric_version": "1.2.0",
+  "surfaces": [
+    {
+      "format_version": "0.1",
+      "kind": "orbitfabric.entity_index",
+      "path": "entity_index.json",
+      "requirement": "required",
+      "role": "entity_index",
+      "sha256": "243aed3a81c6fb3a593f7f5dbf31d1844675af53c05b26f80a0a29dec4480813",
+      "status": "available",
+      "unavailable_reason": null
+    },
+    {
+      "format_version": "v1",
+      "kind": "orbitfabric-lint",
+      "path": "lint_report.json",
+      "requirement": "required",
+      "role": "lint_report",
+      "sha256": "f71a6e500c959d6daf4bcf53a57cadcb95406c2fe74ce7e19277219562205599",
+      "status": "available",
+      "unavailable_reason": null
+    },
+    {
+      "format_version": "0.1-candidate",
+      "kind": "orbitfabric.mission_snapshot",
+      "path": "mission_snapshot.json",
+      "requirement": "required",
+      "role": "mission_snapshot",
+      "sha256": "d91aa343fe1004692aca6562d59b88eed1afdc8077d016c5ed74400d2e769646",
+      "status": "available",
+      "unavailable_reason": null
+    },
+    {
+      "format_version": "0.1",
+      "kind": "orbitfabric.model_summary",
+      "path": "model_summary.json",
+      "requirement": "companion",
+      "role": "model_summary",
+      "sha256": "3a39fd734e79c6054699c303e761a6f9d75b3767390a6afea40dbdd18238f055",
+      "status": "available",
+      "unavailable_reason": null
+    },
+    {
+      "format_version": "0.1-candidate",
+      "kind": "orbitfabric.relationship_manifest",
+      "path": "relationship_manifest.json",
+      "requirement": "required",
+      "role": "relationship_manifest",
+      "sha256": "e792a730d70b678d9519726bb5e4cabc26516f49e43639dd0b33c55df940e570",
+      "status": "available",
+      "unavailable_reason": null
+    }
+  ]
+}

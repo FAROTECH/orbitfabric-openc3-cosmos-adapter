@@ -1,0 +1,11 @@
+{
+  "kind": "orbitfabric.relationship_manifest",
+  "manifest_version": "0.1-candidate",
+  "mission": {
+    "id": "dummy-mission",
+    "model_version": "0.1.0",
+    "name": "Dummy Mission"
+  },
+  "orbitfabric_version": "1.2.0",
+  "relationships": []
+}

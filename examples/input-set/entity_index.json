@@ -1,0 +1,60 @@
+{
+  "boundaries": {
+    "contains_dependency_graph": false,
+    "contains_entity_index": true,
+    "contains_entity_records": true,
+    "contains_ground_behavior": false,
+    "contains_plugin_api": false,
+    "contains_relationship_graph": false,
+    "contains_relationship_manifest": false,
+    "contains_runtime_behavior": false,
+    "contains_source_locations": false,
+    "contains_studio_api": false,
+    "contains_yaml_ast": false,
+    "core_derived_report": true,
+    "read_only": true,
+    "source_of_truth": "mission_model"
+  },
+  "counts": {
+    "domains": {
+      "telemetry": 1
+    },
+    "total_entities": 1
+  },
+  "domains": [
+    {
+      "count_provenance": "mission_model",
+      "display_name": "Telemetry",
+      "entity_count": 1,
+      "id": "telemetry",
+      "indexed": true,
+      "model_count": 1,
+      "present": true,
+      "required": false,
+      "source_file": "telemetry.yaml"
+    }
+  ],
+  "entities": [
+    {
+      "display_name": "Battery Voltage",
+      "domain": "telemetry",
+      "entity_type": "TelemetryPoint",
+      "id": "eps.battery.voltage",
+      "present": true,
+      "provenance": "mission_model",
+      "required_domain": false,
+      "source_file": "telemetry.yaml"
+    }
+  ],
+  "index_version": "0.1",
+  "kind": "orbitfabric.entity_index",
+  "mission": {
+    "id": "dummy-mission",
+    "model_version": "0.1.0",
+    "name": "Dummy Mission"
+  },
+  "orbitfabric_version": "1.2.0",
+  "source": {
+    "mission_dir": "examples/dummy-mission"
+  }
+}

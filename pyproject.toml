@@ -1,0 +1,45 @@
+[build-system]
+requires = ["hatchling>=1.24"]
+build-backend = "hatchling.build"
+
+[project]
+name = "orbitfabric-dummy-adapter"
+version = "0.1.0.dev0"
+description = "Executable dummy adapter shipped with the OrbitFabric Adapter Developer Template."
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "Apache-2.0" }
+authors = [
+  { name = "OrbitFabric Contributors" }
+]
+dependencies = [
+  "PyYAML>=6.0",
+  "jsonschema>=4.23",
+  "rfc8785>=0.1.4"
+]
+
+[project.optional-dependencies]
+dev = [
+  "build>=1.2",
+  "mkdocs-material>=9.5",
+  "pytest>=8.0",
+  "ruff>=0.5"
+]
+
+[project.scripts]
+orbitfabric-dummy-adapter = "orbitfabric_dummy_adapter.cli:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/orbitfabric_dummy_adapter"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
+ignore = []

@@ -1,0 +1,19 @@
+kind: orbitfabric.projection_profile
+profile_version: 0.1-candidate
+profile:
+  id: dummy-example
+  version: 0.1.0
+  description: Minimal profile used by the executable adapter template.
+integration:
+  id: orbitfabric-dummy
+  schema_version: 0.1-candidate
+settings:
+  target_prefix: DUMMY_
+bindings:
+  - id: telemetry.battery_voltage
+    intent: project
+    sources:
+      - domain: telemetry
+        id: eps.battery.voltage
+    config:
+      target_name: BATTERY_VOLTAGE

@@ -1,0 +1,13 @@
+{
+  "domains": {
+    "telemetry": 1
+  },
+  "kind": "orbitfabric.model_summary",
+  "mission": {
+    "id": "dummy-mission",
+    "model_version": "0.1.0",
+    "name": "Dummy Mission"
+  },
+  "orbitfabric_version": "1.2.0",
+  "summary_version": "0.1"
+}

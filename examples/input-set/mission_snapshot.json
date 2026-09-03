@@ -1,0 +1,35 @@
+{
+  "boundaries": {
+    "contains_full_loaded_model": true,
+    "contains_ground_behavior": false,
+    "contains_plugin_api": false,
+    "contains_runtime_behavior": false,
+    "contains_source_locations": false,
+    "contains_structured_diagnostics": true,
+    "contains_studio_api": false,
+    "contains_yaml_ast": false,
+    "core_derived_report": true,
+    "read_only": true,
+    "source_of_truth": "mission_model"
+  },
+  "diagnostics": [],
+  "kind": "orbitfabric.mission_snapshot",
+  "mission": {
+    "id": "dummy-mission",
+    "model_version": "0.1.0",
+    "name": "Dummy Mission"
+  },
+  "model": {
+    "spacecraft": {
+      "id": "dummy-mission",
+      "model_version": "0.1.0",
+      "name": "Dummy Mission"
+    }
+  },
+  "orbitfabric_version": "1.2.0",
+  "result": "loaded",
+  "snapshot_version": "0.1-candidate",
+  "source": {
+    "mission_dir": "examples/dummy-mission"
+  }
+}

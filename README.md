@@ -340,7 +340,7 @@ tools/
 
 ## Documentation
 
-The documentation is organized by role and purpose.
+The repository landing page routes readers by role. The current supporting documents are grouped below by their primary audience; a later documentation pass may split mixed-purpose pages further without changing adapter semantics.
 
 ### User
 

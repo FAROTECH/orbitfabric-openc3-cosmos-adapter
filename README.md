@@ -67,7 +67,7 @@ The adapter does not promote COSMOS-specific plan or runtime semantics into Orbi
 
 ## Development status
 
-The canonical repository bootstrap is active. Product code is being extracted from the historical PoC deliberately, without importing experiment/G6/G9 scaffolding as permanent product structure.
+The `0.1.0.dev0` product baseline is under active development. Product code is extracted from the historical PoC deliberately, without importing experiment/G6/G9 scaffolding as permanent product structure.
 
 Integration Coverage is a release-readiness obligation and is tracked separately in `FAROTECH/OrbitFabric-Architecture-Lab#22`; it is intentionally not a bootstrap blocker.
 

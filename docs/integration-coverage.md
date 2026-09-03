@@ -4,7 +4,7 @@ Integration Coverage describes which OrbitFabric semantics are applicable to the
 
 It is not a count of OpenC3 COSMOS product features and it is not a generic OrbitFabric Core conformance contract.
 
-The complete user-facing matrix is visible directly in the repository [README](../README.md). The detailed maintainer declaration, rationale and roadmap are stored at:
+The complete user-facing matrix is visible directly in the repository README on GitHub. The detailed maintainer declaration, rationale and roadmap are stored at:
 
 ```text
 coverage/integration-coverage.md

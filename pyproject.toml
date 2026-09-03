@@ -29,6 +29,9 @@ dev = [
 [project.scripts]
 orbitfabric-openc3-cosmos = "orbitfabric_openc3_cosmos_adapter.cli:main"
 
+[tool.hatch.metadata]
+allow-direct-references = true
+
 [tool.hatch.build.targets.wheel]
 packages = ["src/orbitfabric_openc3_cosmos_adapter"]
 

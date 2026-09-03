@@ -1,23 +1,40 @@
 from __future__ import annotations
 
+import importlib.util
 import json
 import subprocess
 from pathlib import Path
+from types import ModuleType
 
 import pytest
 
-from tools.build_native_runtime_evidence import (
-    EVIDENCE_KIND,
-    EXPECTED_COSMOS_PROJECT_COMMIT,
-    build_evidence,
+ROOT = Path(__file__).resolve().parents[1]
+
+
+def _load_tool(module_name: str, path: Path) -> ModuleType:
+    spec = importlib.util.spec_from_file_location(module_name, path)
+    if spec is None or spec.loader is None:
+        raise RuntimeError(f"cannot load repository tool: {path}")
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
+EVIDENCE_TOOL = _load_tool(
+    "orbitfabric_cosmos_native_runtime_evidence_tool",
+    ROOT / "tools" / "build_native_runtime_evidence.py",
 )
-from tools.validate_cosmos_ctrf import (
-    CtrfValidationError,
-    extract_ctrf_payload,
-    validate_single_test_pass,
+CTRF_TOOL = _load_tool(
+    "orbitfabric_cosmos_ctrf_tool",
+    ROOT / "tools" / "validate_cosmos_ctrf.py",
 )
 
-ROOT = Path(__file__).resolve().parents[1]
+EVIDENCE_KIND = EVIDENCE_TOOL.EVIDENCE_KIND
+EXPECTED_COSMOS_PROJECT_COMMIT = EVIDENCE_TOOL.EXPECTED_COSMOS_PROJECT_COMMIT
+build_evidence = EVIDENCE_TOOL.build_evidence
+CtrfValidationError = CTRF_TOOL.CtrfValidationError
+extract_ctrf_payload = CTRF_TOOL.extract_ctrf_payload
+validate_single_test_pass = CTRF_TOOL.validate_single_test_pass
 
 
 def test_native_acceptance_shell_is_syntactically_valid() -> None:
@@ -100,7 +117,11 @@ def test_native_runtime_evidence_joins_canonical_provenance(tmp_path: Path) -> N
             "mission_id": "demo-3u",
             "model_version": "0.1.0",
         },
-        "profile": {"id": "openc3-cosmos-demo-3u", "version": "0.1.0", "sha256": "3" * 64},
+        "profile": {
+            "id": "openc3-cosmos-demo-3u",
+            "version": "0.1.0",
+            "sha256": "3" * 64,
+        },
         "operations": [
             {"id": "op-0001", "source_atom_id": "atom-0004"},
             {"id": "op-0002", "source_atom_id": "atom-0005"},

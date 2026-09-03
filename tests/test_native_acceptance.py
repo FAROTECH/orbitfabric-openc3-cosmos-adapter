@@ -44,7 +44,6 @@ def test_native_acceptance_shell_is_syntactically_valid() -> None:
     )
 
 
-
 def test_native_acceptance_uses_persistent_script_status() -> None:
     harness = (ROOT / "tools" / "run_native_cosmos_acceptance.sh").read_text(
         encoding="utf-8"
@@ -56,6 +55,7 @@ def test_native_acceptance_uses_persistent_script_status() -> None:
     assert "-ropenc3" in harness
     assert "-ropenc3/utilities/bucket" in harness
     assert "script run \\" not in harness
+
 
 def test_ofdemo_fixture_matches_canonical_projection_profile() -> None:
     plugin = (ROOT / "acceptance" / "cosmos" / "plugin-overlay" / "plugin.txt.in").read_text(
@@ -114,7 +114,7 @@ def test_native_runtime_evidence_joins_canonical_provenance(tmp_path: Path) -> N
     result = {
         "result": "succeeded",
         "operation": {"id": "verification_projection"},
-        "adapter": {"id": "orbitfabric-openc3-cosmos", "version": "0.1.0.dev0"},
+        "adapter": {"id": "orbitfabric-openc3-cosmos", "version": "0.1.0"},
     }
     plan = {
         "kind": "orbitfabric.openc3_cosmos.verification_projection_plan",

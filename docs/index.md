@@ -42,9 +42,10 @@ Start here when changing source or target projection behavior:
 Start here when accepting source, constructing release artifacts or retaining evidence:
 
 - [Maintainer / Publisher Guide](publishing.md)
+- [Release Readiness Checklist](adapter-readiness-checklist.md)
 - [Release Lifecycle](release-lifecycle.md)
 - [Native COSMOS Acceptance](native-cosmos-acceptance.md)
 - [Evidence and Traceability](evidence-and-traceability.md)
 - [Adapter Identity](adapter-identity.md)
 
-The current source version is `0.1.0.dev0`; stable publication is not yet claimed.
+The source version is `0.1.0`. Stable source preparation does not imply that the immutable `v0.1.0` publication has already occurred.

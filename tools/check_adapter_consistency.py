@@ -16,6 +16,7 @@ EXPECTED_PACKAGE = "orbitfabric_openc3_cosmos_adapter"
 EXPECTED_CONSOLE = "orbitfabric-openc3-cosmos"
 EXPECTED_ADAPTER_ID = "orbitfabric-openc3-cosmos"
 EXPECTED_OPERATION = "verification_projection"
+EXPECTED_VERSION = "0.1.0"
 
 
 def _load_json(path: Path) -> dict[str, Any]:
@@ -51,6 +52,10 @@ def main() -> int:
     project = pyproject.get("project", {})
     if project.get("name") != EXPECTED_DISTRIBUTION:
         errors.append("unexpected Python distribution identity")
+    if project.get("version") != EXPECTED_VERSION:
+        errors.append("unexpected stable Python distribution version")
+    if manifest.get("adapter", {}).get("version") != EXPECTED_VERSION:
+        errors.append("unexpected stable manifest adapter.version")
     if project.get("version") != manifest.get("adapter", {}).get("version"):
         errors.append("pyproject version and manifest adapter.version differ")
 
@@ -106,6 +111,7 @@ def main() -> int:
             errors.append("example Profile version is not declared compatible")
 
     forbidden = {
+        "0.1.0.dev0",
         "orbitfabric-dummy-adapter",
         "orbitfabric_dummy_adapter",
         "orbitfabric-dummy",
@@ -127,7 +133,7 @@ def main() -> int:
         for token in forbidden:
             if token in text:
                 errors.append(
-                    f"{path.relative_to(ROOT)} retains forbidden bootstrap token {token}"
+                    f"{path.relative_to(ROOT)} retains forbidden bootstrap/release token {token}"
                 )
 
     if errors:

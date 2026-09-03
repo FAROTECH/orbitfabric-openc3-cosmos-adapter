@@ -48,6 +48,7 @@ nav:
       - Testing and Conformance: testing-and-conformance.md
   - Maintainer / Publisher:
       - Publishing: publishing.md
+      - Release Readiness Checklist: adapter-readiness-checklist.md
       - Release Lifecycle: release-lifecycle.md
       - Native COSMOS Acceptance: native-cosmos-acceptance.md
       - Evidence and Traceability: evidence-and-traceability.md

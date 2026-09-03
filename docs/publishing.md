@@ -2,7 +2,7 @@
 
 Release construction is a maintainer responsibility and is separate from normal adapter consumption.
 
-The current `0.1.0.dev0` source is not a published stable release.
+The source version is `0.1.0`. An immutable `v0.1.0` release is not yet claimed.
 
 ## Release ownership
 
@@ -21,13 +21,13 @@ publication provider
 
 ## Build provider-neutral release material
 
-From an accepted source commit:
+From the exact accepted stable source commit:
 
 ```bash
 python -m build --wheel
 
 python tools/build_release_bundle.py \
-  --wheel dist/orbitfabric_openc3_cosmos_adapter-<version>-py3-none-any.whl \
+  --wheel dist/orbitfabric_openc3_cosmos_adapter-0.1.0-py3-none-any.whl \
   --authority github.com/FAROTECH \
   --publisher orbitfabric \
   --name openc3-cosmos \
@@ -37,16 +37,16 @@ python tools/build_release_bundle.py \
 Publisher release material is:
 
 ```text
-wheel
+orbitfabric_openc3_cosmos_adapter-0.1.0-py3-none-any.whl
 adapter-release.json
 SHA256SUMS
 ```
 
 The default tool mode additionally builds an Adapter Project Lock for lifecycle proof. That lock is consumer selection evidence and is not publisher release membership.
 
-## Stable Source Coordinate candidate
+## Stable Source Coordinate
 
-The first stable release is expected to use:
+The first stable release freezes:
 
 ```text
 authority = github.com/FAROTECH
@@ -60,11 +60,11 @@ Rendered:
 github.com/FAROTECH:orbitfabric/openc3-cosmos
 ```
 
-The stable release-preparation change must freeze this identity together with `0.1.0`; this development document does not perform that version freeze.
+This identity is now part of the first-release preparation and must not drift between source acceptance, tag creation and definitive release construction.
 
 ## Required source gates
 
-Before tagging a stable release require:
+Before tagging require all items in the [Release Readiness Checklist](adapter-readiness-checklist.md), including:
 
 ```text
 Python 3.11 / 3.12 checks

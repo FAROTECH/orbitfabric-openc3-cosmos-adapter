@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "orbitfabric-openc3-cosmos-adapter"
-version = "0.1.0.dev0"
+version = "0.1.0"
 description = "OrbitFabric adapter for OpenC3 COSMOS verification projection."
 readme = "README.md"
 requires-python = ">=3.11"

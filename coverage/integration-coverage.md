@@ -1,6 +1,6 @@
 # OpenC3 COSMOS Adapter Integration Coverage
 
-Status: maintainer coverage declaration for the canonical `0.1.0.dev0` productization baseline.
+Status: maintainer coverage declaration for the canonical `0.1.0` stable release-preparation baseline.
 
 This matrix describes the OrbitFabric semantic surface assessed against the OpenC3 COSMOS integration role, the subset deliberately claimed by this adapter, and the current implementation disposition.
 
@@ -72,9 +72,9 @@ If claimed, how completely is that claim implemented and evidenced?
 | Relationship Manifest as a direct projection surface | no | no independent COSMOS relationship-graph artifact is owned by this adapter | out of scope | NOT_APPLICABLE | Relationship Manifest remains a required Core coherence surface; the current adapter does not manufacture a second target relationship graph | reassess only if a downstream-native relationship representation becomes part of scope |
 | Scenario validation and provenance | yes | exact Core `ScenarioLoader` validation plus Verification Projection Plan provenance | in scope | FULL | Scenario semantics are validated by Core; mission identity/model version are cross-checked with the consumed Integration Input Set; Scenario digest is retained in plan and Result | complete for current operation contract |
 | Scenario step ordering and `t` semantics | yes | generated Python statement order plus plan `scenario_t` provenance | in scope | PARTIAL | Source order and each `t` value are preserved for provenance, but `t` is deliberately **not** converted into real waits, scheduling or wall-clock behavior without explicit target policy | retain distinction; add timing only through reviewed target-owned policy |
-| Scenario command action without arguments | yes | COSMOS `cmd()` with Profile-resolved target/command naming | in scope | FULL | Canonical projection generates `cmd(...)`; native acceptance on adapter commit `44915686358da7334540d4fa1aca9e204d8a4ac9` proved real `STOP_ACQUISITION` transport through COSMOS to the external OFDEMO target | complete for current declared scope; retain regression evidence |
+| Scenario command action without arguments | yes | COSMOS `cmd()` with Profile-resolved target/command naming | in scope | FULL | Canonical projection generates `cmd(...)`; native acceptance on adapter commit `44915686358da7334540d4fa1aca9e204d8a4ac9` proved real `STOP_ACQUISITION` transport through COSMOS to the external OFDEMO target | complete for current declared scope; repeat on exact stable source before tag |
 | Scenario command arguments | yes | COSMOS command argument encoding | out of scope | OUT_OF_SCOPE | The projector blocks commands with arguments instead of inventing target encoding | define explicit target argument encoder before adding to declared scope |
-| Scenario telemetry expectation | yes | COSMOS `wait_check()` with Profile-resolved packet/item, encoding and timeout | in scope | FULL | Canonical projection materializes `wait_check(...)`; `boolean_01` and scalar identity encoding are explicit; native acceptance on commit `44915686358da7334540d4fa1aca9e204d8a4ac9` proved real STATUS telemetry return with `acquisition_active=false` and CTRF PASS | complete for current declared scope; retain regression evidence |
+| Scenario telemetry expectation | yes | COSMOS `wait_check()` with Profile-resolved packet/item, encoding and timeout | in scope | FULL | Canonical projection materializes `wait_check(...)`; `boolean_01` and scalar identity encoding are explicit; native acceptance on commit `44915686358da7334540d4fa1aca9e204d8a4ac9` proved real STATUS telemetry return with `acquisition_active=false` and CTRF PASS | complete for current declared scope; repeat on exact stable source before tag |
 | Scenario telemetry injection | yes | target/simulator-specific write or injection mechanisms | out of scope | OUT_OF_SCOPE | OrbitFabric telemetry mutation is not assumed equivalent to a COSMOS simulator/target input without an explicit mapping | design target injection contract before adding scope |
 | Scenario event expectation | yes | target log/event/telemetry observation | out of scope | OUT_OF_SCOPE | Current operation records event expectation as `not_projected`; no event observability binding is defined | design event observation mapping before adding scope |
 | Scenario mode expectation | yes | target telemetry/state observation | out of scope | OUT_OF_SCOPE | Current operation records mode expectation as `not_projected`; no target mode observation mapping is defined | design mode observation mapping before adding scope |
@@ -85,9 +85,10 @@ If claimed, how completely is that claim implemented and evidenced?
 
 ### Core and adapter contract evidence
 
-The canonical adapter CI proves on Python 3.11 and 3.12:
+Permanent CI proves:
 
 ```text
+Python 3.11 / 3.12
 exact Core baseline installation
 Ruff
 adapter identity / product-hygiene consistency
@@ -98,123 +99,60 @@ wheel build and packaged asset ownership
 MkDocs strict build
 ```
 
-The Core input control includes:
-
-```text
-RFC 8785/JCS input_set_sha256 recomputation
-required role / availability / kind / format_version checks
-portable relative-path containment
-per-surface SHA-256 verification
-mission identity consistency
-negative tamper / incompatible-surface tests
-```
-
 ### Canonical OpenC3 COSMOS compatibility evidence
 
-The `target-compatibility-cosmos` job pins:
+The `target-compatibility-cosmos` job pins OpenC3 COSMOS `v7.3.0` and proves the generated procedure / suite against exact downstream source/API surfaces. Hosted compatibility does not claim live TCP or CTRF acceptance.
+
+### Managed consumer evidence
+
+Permanent CI now proves:
 
 ```text
-OpenC3 COSMOS v7.3.0
+wheel build
+    -> Adapter Manager install
+    -> source-tree removal
+    -> consumer Scenario Verification Projection example
+    -> Core-conformant Integration Result
+    -> generated COSMOS procedure / suite
+    -> remove -> empty inventory
 ```
 
-and proves:
+The provider-neutral release proof separately proves Release Descriptor and Project Lock lifecycle behavior.
 
-```text
-Core Integration Input Set generation
-canonical verification_projection execution
-Core-conformant Integration Result
-Verification Projection Plan generation
-generated Python procedure / suite syntax compilation
-presence of exact-baseline COSMOS cmd(), wait_check(), Group and Suite APIs
-generated imports against the validated target source baseline
-```
+### Canonical native COSMOS acceptance
 
-This hosted CI control is intentionally a target source/API compatibility gate. It does **not** claim live TCP command/telemetry execution or CTRF acceptance.
-
-### Canonical native COSMOS acceptance harness
-
-The product repository owns a reproducible native runtime harness:
+The product-owned native harness:
 
 ```text
 tools/run_native_cosmos_acceptance.sh
 ```
 
-It proves, in one clean exact source commit:
+has produced a clean candidate PASS on exact source commit:
 
 ```text
-canonical wheel build and isolated installation
-canonical Core Input Set + Scenario projection
-use of the exact generated verification.py / verification_suite.py artifacts
-native COSMOS plugin generation / build / validation / load
-external OFDEMO command and telemetry TCP path
-persistent Script Runner execution status
-persisted native Script Runner report
-OpenC3-native CTRF conversion
-one-test CTRF PASS
-adapter-owned joined runtime evidence
+44915686358da7334540d4fa1aca9e204d8a4ac9
 ```
 
-The harness itself is covered by normal CI for shell syntax, fixture identity, fail-closed CTRF parsing, persistent Script Runner evidence behavior and joined-evidence construction.
-
-**Runtime status:** PASS on exact adapter source commit `44915686358da7334540d4fa1aca9e204d8a4ac9`.
-
-Validated downstream baseline:
+against:
 
 ```text
 OpenC3 COSMOS  v7.3.0
 cosmos-project 9eb454f06fe0113d05aa6945d88b627155a2aa47
 ```
 
-Observed native evidence in the accepted run:
+Observed:
 
 ```text
-STOP_ACQUISITION command received by external OFDEMO
+STOP_ACQUISITION received by external OFDEMO
 STATUS telemetry returned with acquisition_active=false
-COSMOS Script Runner state completed
-persisted native Script Runner report
-CTRF tests 1
-CTRF passed 1
-CTRF failed 0
+Script Runner state completed
+persisted native report
+OpenC3-native CTRF conversion
+CTRF tests 1 / passed 1 / failed 0
 native-runtime-evidence status passed
 ```
 
-The full runtime is intentionally not added to mandatory GitHub-hosted CI while the required host/container topology remains environment-dependent.
-
-### Historical native COSMOS runtime evidence
-
-The historical `FAROTECH/OrbitFabric-OpenC3-COSMOS-PoC` remains engineering evidence and regression reference.
-
-Its accepted local native COSMOS `v7.3.0` Experiment 001 previously proved:
-
-```text
-COSMOS plugin and target generation
-plugin build / validation / load
-real TCP command transport to an external simulator
-real telemetry transport back to COSMOS
-native telemetry decommutation
-native Script Runner verification
-machine-readable CTRF PASS evidence
-joined provenance back to Scenario, Core inputs, Profile and projected operations
-```
-
-This historical evidence remains useful for regression comparison, but canonical runtime claims are now supported by product-owned evidence rather than inherited from the PoC.
-
-### Adapter Manager lifecycle and release evidence
-
-The canonical installed-lifecycle and provider-neutral release-proof jobs establish:
-
-```text
-wheel installation through Adapter Manager
-inventory and verify
-source-tree removal before installed execution
-verification_projection through the installed execution binding
-Integration Result conformance
-generated plan / procedure / suite artifact presence
-remove -> empty inventory
-Project Lock MISSING -> install -> MATCH
-second install -> NOOP / MATCH
-publisher-owned release material construction
-```
+The exact stable `0.1.0` source commit must repeat this acceptance before `v0.1.0` tagging.
 
 ## Summary
 
@@ -259,31 +197,15 @@ No single maturity percentage is reported because it would hide the distinction 
 
 ## Initial release-scope decision
 
-The initial `0.1.x` line should **not** add a generic `project` operation merely to reduce `OUT_OF_SCOPE` rows.
-
-The product currently proves a coherent integration chain:
-
-```text
-OrbitFabric Core Integration Input Set
-    + OrbitFabric Scenario
-    + OpenC3 COSMOS Projection Profile
-        -> validated semantic atom accounting
-        -> no-argument COSMOS command projection
-        -> COSMOS telemetry expectation projection
-        -> native Python procedure / suite artifacts
-        -> Core-conformant Integration Result
-        -> native COSMOS runtime acceptance
-```
+The `0.1.x` line should **not** add a generic `project` operation merely to reduce `OUT_OF_SCOPE` rows.
 
 Later versions may widen one semantic family at a time. Each addition should first define the target-owned meaning, then add implementation, negative behavior and target-native evidence.
 
 ## Release-readiness implication
 
-Integration Coverage itself is complete for this baseline. The architecture and target-evidence decisions exposed by the matrix have both been resolved on the current candidate commit: the canonical repository carries the native runtime acceptance path and that path has produced a clean PASS.
+Integration Coverage is complete for the stable release-preparation baseline. No semantic coverage change is required before `v0.1.0`.
 
-Before the first release freeze, native acceptance must be repeated against the exact accepted source commit after merge so that retained evidence is tied to the source that will actually be published.
-
-That final provenance step must not be confused with a semantic coverage gap and is not a reason to widen OrbitFabric scope.
+The remaining pre-tag target gate is exact-source native acceptance. That gate exists for provenance, not to compensate for a semantic gap.
 
 ## Policy note
 

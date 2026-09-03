@@ -13,31 +13,36 @@ publication provider
     transport and distribution
 ```
 
-Development version `0.1.0.dev0` does not imply stable publication readiness.
+Source version `0.1.0` does not imply that immutable publication has already occurred.
 
 ## Current readiness state
 
-The declared initial semantic scope is functionally complete and canonical native COSMOS acceptance has passed on a candidate source commit.
+The declared initial semantic scope is functionally complete, the consumer product surface is CI-backed, and canonical native COSMOS acceptance has passed on a candidate source commit.
 
-The remaining path to `v0.1.0` is product and release closure:
+The release-preparation source now freezes:
 
 ```text
-consumer product example
-    -> role-separated product docs
-    -> stable version / Source Coordinate freeze
-    -> permanent CI on exact stable source
-    -> native COSMOS acceptance on exact stable source
-    -> exact v0.1.0 tag
-    -> definitive release assets
-    -> immutable publication
-    -> external greenfield acceptance
+version:          0.1.0
+logical key:      orbitfabric/openc3-cosmos
+source authority: github.com/FAROTECH
+publisher:        orbitfabric
+name:             openc3-cosmos
 ```
 
-Do not widen semantic scope to make the release appear more complete.
+The remaining pre-tag gate is exact-source acceptance:
+
+```text
+merge the release-preparation source
+    -> permanent CI green on exact main commit
+    -> native COSMOS acceptance PASS on that exact commit
+    -> retain source / wheel / target provenance
+```
+
+Only then is the source eligible for the `v0.1.0` tag.
 
 ## Stable release membership
 
-The stable publisher release is expected to contain only the normative adapter release material:
+The publisher release membership is:
 
 ```text
 v0.1.0 tag
@@ -59,4 +64,4 @@ Hosted CI proves source checks, contract behavior, managed lifecycle, product-ex
 
 No immutable `v0.1.0` release is currently claimed.
 
-See [Maintainer / Publisher Guide](publishing.md) for the construction and publication sequence.
+See [Release Readiness Checklist](adapter-readiness-checklist.md) and [Maintainer / Publisher Guide](publishing.md).

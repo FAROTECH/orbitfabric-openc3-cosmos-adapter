@@ -1,17 +1,20 @@
 from __future__ import annotations
 
+import re
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
-from .io import load_json, sha256_file
+from .io import canonical_input_set_sha256, load_json, sha256_file
 
-REQUIRED_SURFACES = {
-    "mission_snapshot",
-    "entity_index",
-    "relationship_manifest",
-    "lint_report",
+SURFACE_SPECS = {
+    "entity_index": ("orbitfabric.entity_index", "0.1"),
+    "lint_report": ("orbitfabric-lint", "v1"),
+    "mission_snapshot": ("orbitfabric.mission_snapshot", "0.1-candidate"),
+    "relationship_manifest": ("orbitfabric.relationship_manifest", "0.1-candidate"),
 }
+REQUIRED_SURFACES = set(SURFACE_SPECS)
+SHA256_RE = re.compile(r"^[0-9a-f]{64}$")
 
 
 @dataclass(frozen=True)
@@ -57,6 +60,10 @@ def load_core_input_set(manifest_path: Path) -> CoreInputSet:
     if manifest.get("lint_result") not in {"passed", "passed_with_warnings"}:
         raise ValueError("Core Integration Input Set lint result is not acceptable")
 
+    orbitfabric_version = manifest.get("orbitfabric_version")
+    if not isinstance(orbitfabric_version, str) or not orbitfabric_version:
+        raise ValueError("Core Integration Input Set orbitfabric_version is missing")
+
     mission = manifest.get("mission")
     if not isinstance(mission, dict):
         raise ValueError("Core Integration Input Set mission identity is missing")
@@ -66,8 +73,14 @@ def load_core_input_set(manifest_path: Path) -> CoreInputSet:
         raise ValueError("Core Integration Input Set mission.model_version is missing")
 
     input_set_sha = manifest.get("input_set_sha256")
-    if not isinstance(input_set_sha, str) or len(input_set_sha) != 64:
+    if not isinstance(input_set_sha, str) or SHA256_RE.fullmatch(input_set_sha) is None:
         raise ValueError("Core Integration Input Set digest is missing or malformed")
+    computed_input_set_sha = canonical_input_set_sha256(manifest)
+    if input_set_sha != computed_input_set_sha:
+        raise ValueError(
+            "Core Integration Input Set fingerprint mismatch: "
+            f"declared={input_set_sha}, computed={computed_input_set_sha}"
+        )
 
     surfaces = manifest.get("surfaces")
     if not isinstance(surfaces, list):
@@ -78,7 +91,7 @@ def load_core_input_set(manifest_path: Path) -> CoreInputSet:
         if not isinstance(record, dict):
             raise ValueError("Core Integration Input Set contains malformed surface record")
         role = record.get("role")
-        if not isinstance(role, str) or role in by_role:
+        if not isinstance(role, str) or not role or role in by_role:
             raise ValueError("Core Integration Input Set contains invalid/duplicate surface role")
         by_role[role] = record
 
@@ -87,19 +100,39 @@ def load_core_input_set(manifest_path: Path) -> CoreInputSet:
         raise ValueError(f"Core Integration Input Set missing required surfaces: {missing}")
 
     root = manifest_path.parent.resolve()
-    for role in REQUIRED_SURFACES:
+    for role, (expected_kind, expected_version) in SURFACE_SPECS.items():
         record = by_role[role]
+        if record.get("requirement") != "required":
+            raise ValueError(f"required Core surface has wrong requirement: {role}")
         if record.get("status") != "available":
             raise ValueError(f"required Core surface is unavailable: {role}")
+        if record.get("kind") != expected_kind:
+            raise ValueError(
+                f"required Core surface kind is incompatible: {role}: {record.get('kind')!r}"
+            )
+        if record.get("format_version") != expected_version:
+            raise ValueError(
+                "required Core surface format version is incompatible: "
+                f"{role}: {record.get('format_version')!r}"
+            )
+        if record.get("unavailable_reason") is not None:
+            raise ValueError(f"available Core surface has unavailable_reason: {role}")
+
         relative_path = record.get("path")
         expected_sha = record.get("sha256")
         if not isinstance(relative_path, str) or not relative_path:
             raise ValueError(f"required Core surface has no path: {role}")
-        if not isinstance(expected_sha, str) or len(expected_sha) != 64:
+        if not isinstance(expected_sha, str) or SHA256_RE.fullmatch(expected_sha) is None:
             raise ValueError(f"required Core surface has no valid digest: {role}")
-        surface_path = (root / relative_path).resolve()
-        if root not in surface_path.parents:
-            raise ValueError(f"Core surface path escapes input-set directory: {role}")
+
+        candidate = Path(relative_path)
+        if candidate.is_absolute():
+            raise ValueError(f"Core surface path must be relative: {role}")
+        surface_path = (root / candidate).resolve()
+        try:
+            surface_path.relative_to(root)
+        except ValueError as exc:
+            raise ValueError(f"Core surface path escapes input-set directory: {role}") from exc
         if not surface_path.is_file():
             raise ValueError(f"required Core surface file is missing: {role}")
         if sha256_file(surface_path) != expected_sha:

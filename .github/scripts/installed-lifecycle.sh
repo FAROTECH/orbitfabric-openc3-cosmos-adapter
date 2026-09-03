@@ -8,20 +8,23 @@ fi
 
 root="${GITHUB_WORKSPACE:?GITHUB_WORKSPACE is required}"
 core="$root/_orbitfabric_core"
-work="/tmp/orbitfabric-template-installed-lifecycle"
+work="/tmp/orbitfabric-openc3-cosmos-installed-lifecycle"
 state="$work/state"
 evidence="$work/evidence"
 wheelhouse="$work/wheelhouse"
 release_dir="$work/release"
 core_input="$work/core-input"
-project_output="$work/project-output"
 verification_output="$work/verification-output"
+scenario="$work/scenario.yaml"
+profile="$root/examples/profile.yaml"
 
 export ORBITFABRIC_STATE_DIR="$state"
 
 rm -rf "$work"
-mkdir -p "$evidence" "$wheelhouse" "$release_dir"
+mkdir -p "$evidence" "$wheelhouse" "$release_dir" "$verification_output"
 
+cd "$root"
+rm -rf dist
 python -m build --wheel
 wheel="$(realpath "$(find "$root/dist" -maxdepth 1 -name '*.whl' -print -quit)")"
 test -n "$wheel"
@@ -31,14 +34,34 @@ orbitfabric export integration-input-set \
   --output-dir "$core_input"
 test -f "$core_input/integration_input_manifest.json"
 
+cat > "$scenario" <<EOF
+scenario:
+  id: cosmos_verification_smoke
+  name: COSMOS verification smoke
+  description: Installed lifecycle Scenario for the canonical OpenC3 COSMOS adapter.
+mission:
+  path: $core/examples/demo-3u/mission
+initial_state:
+  mode: NOMINAL
+  telemetry:
+    payload.acquisition.active: true
+steps:
+  - t: 1
+    command: payload.stop_acquisition
+  - t: 2
+    expect_telemetry:
+      payload.acquisition.active: false
+EOF
+
 python -m pip download --dest "$wheelhouse" "$wheel"
+python -m pip download --dest "$wheelhouse" "hatchling>=1.24"
 test -n "$(find "$wheelhouse" -maxdepth 1 -type f -print -quit)"
 
 python tools/build_release_bundle.py \
   --wheel "$wheel" \
-  --authority explicit-template-control \
-  --publisher orbitfabric-template \
-  --name dummy-adapter \
+  --authority local.adapter.test \
+  --publisher orbitfabric \
+  --name openc3-cosmos \
   --output-dir "$release_dir"
 
 descriptor="$release_dir/adapter-release.json"
@@ -95,66 +118,57 @@ for name in (
     assert report[name]["status"] == "PASS", (name, report[name])
 PY
 
-mkdir -p "$project_output"
-PYTHONPATH= orbitfabric adapter execute "$INSTANCE_ID" \
-  --operation project \
-  --input-set-manifest "$core_input/integration_input_manifest.json" \
-  --profile "$root/examples/profile.yaml" \
-  --output-dir "$project_output" \
-  --json | tee "$evidence/project-execution.json"
-python -m orbitfabric.conformance.integration_contracts result \
-  "$INSTALLED_MANIFEST" \
-  "$project_output/integration_result.json"
-PROJECT_OUTPUT="$project_output" python - <<'PY'
-import json
-import os
-from pathlib import Path
-
-output = Path(os.environ["PROJECT_OUTPUT"])
-result = json.loads((output / "integration_result.json").read_text(encoding="utf-8"))
-projection = json.loads((output / "dummy_projection.json").read_text(encoding="utf-8"))
-assert result["result"] == "succeeded"
-assert result["operation"]["id"] == "project"
-assert result["mission"]["id"] == "demo-3u"
-assert result["inputs"]["operation_inputs"] == []
-assert projection["telemetry"][0]["source_id"] == "eps.battery.voltage"
-PY
-cp "$project_output/integration_result.json" "$evidence/project-integration-result.json"
-cp "$project_output/dummy_projection.json" "$evidence/dummy-projection.json"
-
-scenario="$core/examples/demo-3u/scenarios/battery_low_during_payload.yaml"
-mkdir -p "$verification_output"
 PYTHONPATH= orbitfabric adapter execute "$INSTANCE_ID" \
   --operation verification_projection \
   --input-set-manifest "$core_input/integration_input_manifest.json" \
-  --profile "$root/examples/profile.yaml" \
+  --profile "$profile" \
   --operation-input "scenario=$scenario" \
   --output-dir "$verification_output" \
   --json | tee "$evidence/verification-execution.json"
+
 python -m orbitfabric.conformance.integration_contracts result \
   "$INSTALLED_MANIFEST" \
   "$verification_output/integration_result.json"
-SCENARIO="$scenario" VERIFICATION_OUTPUT="$verification_output" python - <<'PY'
+
+SCENARIO="$scenario" OUTPUT="$verification_output" python - <<'PY'
 import hashlib
 import json
 import os
 from pathlib import Path
 
 scenario = Path(os.environ["SCENARIO"])
-output = Path(os.environ["VERIFICATION_OUTPUT"])
+output = Path(os.environ["OUTPUT"])
 result = json.loads((output / "integration_result.json").read_text(encoding="utf-8"))
-plan = json.loads((output / "dummy_verification_plan.json").read_text(encoding="utf-8"))
-provenance = result["inputs"]["operation_inputs"]
+plan = json.loads(
+    (output / "verification_projection" / "verification_projection_plan.json").read_text(
+        encoding="utf-8"
+    )
+)
+
 assert result["result"] == "succeeded"
 assert result["operation"]["id"] == "verification_projection"
+assert result["mission"]["id"] == "demo-3u"
+provenance = result["inputs"]["operation_inputs"]
 assert len(provenance) == 1
 assert provenance[0]["role"] == "scenario"
-assert provenance[0]["id"] == "battery_low_during_payload"
+assert provenance[0]["id"] == "cosmos_verification_smoke"
 assert provenance[0]["sha256"] == hashlib.sha256(scenario.read_bytes()).hexdigest()
-assert plan["scenario"]["id"] == "battery_low_during_payload"
+assert [item["id"] for item in result["artifacts"]] == [
+    "verification.plan",
+    "verification.cosmos_procedure",
+    "verification.cosmos_suite",
+]
+assert plan["status"] == "executable_subset"
+assert plan["target"]["baseline"] == "v7.3.0"
+assert plan["accounting"]["resolved_operations"] == 2
+assert (output / "verification_projection" / "cosmos" / "verification.py").is_file()
+assert (output / "verification_projection" / "cosmos" / "verification_suite.py").is_file()
 PY
-cp "$verification_output/integration_result.json" "$evidence/verification-integration-result.json"
-cp "$verification_output/dummy_verification_plan.json" "$evidence/dummy-verification-plan.json"
+
+cp "$verification_output/integration_result.json" \
+  "$evidence/verification-integration-result.json"
+cp "$verification_output/verification_projection/verification_projection_plan.json" \
+  "$evidence/verification-projection-plan.json"
 
 orbitfabric adapter remove "$INSTANCE_ID" --json | tee "$evidence/remove.json"
 orbitfabric adapter list --json | tee "$evidence/final-inventory.json"

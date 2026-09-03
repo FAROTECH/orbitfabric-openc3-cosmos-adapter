@@ -1,34 +1,17 @@
-# OrbitFabric Adapter Developer Template
+# OrbitFabric OpenC3 COSMOS Adapter
 
-This documentation is for developers building an OrbitFabric adapter.
+This adapter projects OrbitFabric verification intent into target-owned artifacts consumable by OpenC3 COSMOS.
 
-The Template is executable. The included Dummy Adapter builds, runs, emits Core-conformant Integration Results, installs through Adapter Manager, proves exact Project Lock state and demonstrates an Integration Coverage Matrix.
-
-OrbitFabric Core remains authoritative for generic integration contracts. The Template explains how to consume those contracts correctly inside a maintainable adapter repository.
-
-## Recommended path
+The initial product lane is deliberately narrow:
 
 ```text
-Getting Started
-    -> Repository Anatomy
-    -> Adapter Identity
-    -> Architecture and Ownership
-    -> Integration Contracts
-    -> Projection Profile and Bindings
-    -> Testing and Conformance
-    -> Evidence and Traceability
-    -> Runtime Dependencies
-    -> Release Lifecycle
-    -> Integration Coverage
-    -> Adapter Readiness Checklist
+Scenario
+    + Core Integration Input Set
+    + COSMOS Projection Profile
+        -> verification_projection
+        -> COSMOS verification plan
+        -> COSMOS Python procedure / suite
+        -> Integration Result
 ```
 
-If you are extracting an adapter from an existing experiment, read [Migrating from a PoC](migrating-from-poc.md) after the main developer path.
-
-## One rule to remember
-
-```text
-Core defines what is valid.
-The Template demonstrates how to build it well.
-The adapter owns target-specific projection and evidence.
-```
+The adapter owns projection and traceability. OpenC3 COSMOS owns runtime execution. OrbitFabric Core remains authoritative for generic contracts.

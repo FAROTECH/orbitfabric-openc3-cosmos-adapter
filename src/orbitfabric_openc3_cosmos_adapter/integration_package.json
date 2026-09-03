@@ -1,0 +1,94 @@
+{
+  "kind": "orbitfabric.integration_package",
+  "manifest_version": "0.2-candidate",
+  "integration": {
+    "id": "orbitfabric-openc3-cosmos"
+  },
+  "adapter": {
+    "id": "orbitfabric-openc3-cosmos",
+    "version": "0.1.0.dev0"
+  },
+  "core_input_compatibility": {
+    "input_set_versions": [
+      "0.1-candidate"
+    ],
+    "surfaces": [
+      {
+        "role": "entity_index",
+        "kind": "orbitfabric.entity_index",
+        "format_versions": [
+          "0.1"
+        ]
+      },
+      {
+        "role": "lint_report",
+        "kind": "orbitfabric-lint",
+        "format_versions": [
+          "v1"
+        ]
+      },
+      {
+        "role": "mission_snapshot",
+        "kind": "orbitfabric.mission_snapshot",
+        "format_versions": [
+          "0.1-candidate"
+        ]
+      },
+      {
+        "role": "relationship_manifest",
+        "kind": "orbitfabric.relationship_manifest",
+        "format_versions": [
+          "0.1-candidate"
+        ]
+      }
+    ],
+    "relationship_families": []
+  },
+  "profile_compatibility": {
+    "profile_versions": [
+      "0.1-candidate"
+    ]
+  },
+  "result_compatibility": {
+    "result_versions": [
+      "0.2-candidate"
+    ],
+    "default_result_version": "0.2-candidate"
+  },
+  "capabilities": [
+    "profile_validation",
+    "projection",
+    "artifact_generation",
+    "traceability"
+  ],
+  "operations": [
+    {
+      "id": "verification_projection",
+      "capabilities": [
+        "profile_validation",
+        "projection",
+        "artifact_generation",
+        "traceability"
+      ],
+      "input_requirements": [
+        {
+          "role": "scenario"
+        }
+      ]
+    }
+  ],
+  "profile_schemas": [
+    {
+      "schema_version": "0.1-candidate",
+      "format": "json-schema-2020-12",
+      "path": "schemas/profile-0.1.schema.json",
+      "sha256": "dbe97d301059b5d0fc2d6b53578e869b95b31c8a5697a117ecd82cd7a6fb1141"
+    }
+  ],
+  "execution": {
+    "protocol": "orbitfabric.adapter_cli.v1",
+    "argv_prefix": [
+      "orbitfabric-openc3-cosmos"
+    ]
+  }
+}

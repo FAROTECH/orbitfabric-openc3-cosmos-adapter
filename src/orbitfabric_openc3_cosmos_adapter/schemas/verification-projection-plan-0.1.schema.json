@@ -1,0 +1,568 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:orbitfabric:openc3-cosmos:verification-projection-plan:0.1",
+  "title": "OrbitFabric OpenC3 COSMOS Verification Projection Plan",
+  "description": "Adapter-owned resolved projection artifact. This is not a generic OrbitFabric Core contract.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "kind",
+    "plan_version",
+    "status",
+    "source",
+    "core_input",
+    "profile",
+    "integration",
+    "target",
+    "accounting",
+    "atoms",
+    "operations",
+    "diagnostics"
+  ],
+  "properties": {
+    "kind": {
+      "const": "orbitfabric.openc3_cosmos.verification_projection_plan"
+    },
+    "plan_version": {
+      "const": "0.1-candidate"
+    },
+    "status": {
+      "enum": [
+        "executable_subset",
+        "blocked"
+      ]
+    },
+    "source": {
+      "$ref": "#/$defs/source"
+    },
+    "core_input": {
+      "$ref": "#/$defs/core_input"
+    },
+    "profile": {
+      "$ref": "#/$defs/profile"
+    },
+    "integration": {
+      "$ref": "#/$defs/integration"
+    },
+    "target": {
+      "$ref": "#/$defs/target"
+    },
+    "accounting": {
+      "$ref": "#/$defs/accounting"
+    },
+    "atoms": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/atom"
+      }
+    },
+    "operations": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/operation"
+      }
+    },
+    "diagnostics": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/diagnostic"
+      }
+    }
+  },
+  "$defs": {
+    "nonempty": {
+      "type": "string",
+      "minLength": 1
+    },
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "scenario_id",
+        "scenario_name",
+        "scenario_description",
+        "scenario_sha256",
+        "orbitfabric_version"
+      ],
+      "properties": {
+        "scenario_id": {
+          "$ref": "#/$defs/nonempty"
+        },
+        "scenario_name": {
+          "$ref": "#/$defs/nonempty"
+        },
+        "scenario_description": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "scenario_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "orbitfabric_version": {
+          "$ref": "#/$defs/nonempty"
+        }
+      }
+    },
+    "core_input": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kind",
+        "input_set_version",
+        "input_set_sha256",
+        "mission_id",
+        "model_version"
+      ],
+      "properties": {
+        "kind": {
+          "const": "orbitfabric.integration_input_set"
+        },
+        "input_set_version": {
+          "const": "0.1-candidate"
+        },
+        "input_set_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "mission_id": {
+          "$ref": "#/$defs/nonempty"
+        },
+        "model_version": {
+          "$ref": "#/$defs/nonempty"
+        }
+      }
+    },
+    "profile": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kind",
+        "profile_version",
+        "id",
+        "version",
+        "sha256"
+      ],
+      "properties": {
+        "kind": {
+          "const": "orbitfabric.projection_profile"
+        },
+        "profile_version": {
+          "const": "0.1-candidate"
+        },
+        "id": {
+          "$ref": "#/$defs/nonempty"
+        },
+        "version": {
+          "$ref": "#/$defs/nonempty"
+        },
+        "sha256": {
+          "$ref": "#/$defs/sha256"
+        }
+      }
+    },
+    "integration": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "schema_version",
+        "adapter_version"
+      ],
+      "properties": {
+        "id": {
+          "const": "orbitfabric-openc3-cosmos"
+        },
+        "schema_version": {
+          "const": "0.1-candidate"
+        },
+        "adapter_version": {
+          "$ref": "#/$defs/nonempty"
+        }
+      }
+    },
+    "target": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "ecosystem",
+        "baseline",
+        "target_name"
+      ],
+      "properties": {
+        "ecosystem": {
+          "const": "OpenC3 COSMOS"
+        },
+        "baseline": {
+          "const": "v7.3.0"
+        },
+        "target_name": {
+          "$ref": "#/$defs/nonempty"
+        }
+      }
+    },
+    "accounting": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source_atoms",
+        "projected_atoms",
+        "not_projected_atoms",
+        "blocked_atoms",
+        "source_actions",
+        "source_expectations",
+        "projected_source_actions",
+        "projected_source_expectations",
+        "resolved_operations"
+      ],
+      "properties": {
+        "source_atoms": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "projected_atoms": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "not_projected_atoms": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "blocked_atoms": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "source_actions": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "source_expectations": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "projected_source_actions": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "projected_source_expectations": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "resolved_operations": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "core_entity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "domain",
+        "id"
+      ],
+      "properties": {
+        "domain": {
+          "$ref": "#/$defs/nonempty"
+        },
+        "id": {
+          "$ref": "#/$defs/nonempty"
+        }
+      }
+    },
+    "atom": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "kind",
+        "role",
+        "step_index",
+        "scenario_t",
+        "disposition",
+        "source",
+        "binding_id",
+        "operation_ids",
+        "reason",
+        "source_value"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^atom-[0-9]{4}$"
+        },
+        "kind": {
+          "enum": [
+            "scenario_metadata",
+            "initial_mode",
+            "initial_telemetry",
+            "command",
+            "command_argument",
+            "telemetry_injection",
+            "expect_mode",
+            "expect_event",
+            "expect_command",
+            "expect_command_status",
+            "expect_telemetry",
+            "expect_payload_lifecycle",
+            "expect_data_flow",
+            "expect_scenario_status",
+            "unknown_expectation"
+          ]
+        },
+        "role": {
+          "enum": [
+            "metadata",
+            "initial_state",
+            "action",
+            "expectation"
+          ]
+        },
+        "step_index": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "scenario_t": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "disposition": {
+          "enum": [
+            "projected",
+            "not_projected",
+            "blocked"
+          ]
+        },
+        "source": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/core_entity"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "binding_id": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1
+        },
+        "operation_ids": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^op-[0-9]{4}$"
+          }
+        },
+        "reason": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1
+        },
+        "source_value": {}
+      }
+    },
+    "send_command": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "target",
+        "command",
+        "arguments"
+      ],
+      "properties": {
+        "target": {
+          "$ref": "#/$defs/nonempty"
+        },
+        "command": {
+          "$ref": "#/$defs/nonempty"
+        },
+        "arguments": {
+          "type": "object"
+        }
+      }
+    },
+    "wait_telemetry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "target",
+        "packet",
+        "item",
+        "operator",
+        "source_expected_value",
+        "expected_value",
+        "value_encoding",
+        "timeout_s"
+      ],
+      "properties": {
+        "target": {
+          "$ref": "#/$defs/nonempty"
+        },
+        "packet": {
+          "$ref": "#/$defs/nonempty"
+        },
+        "item": {
+          "$ref": "#/$defs/nonempty"
+        },
+        "operator": {
+          "const": "=="
+        },
+        "source_expected_value": {},
+        "expected_value": {},
+        "value_encoding": {
+          "enum": [
+            "identity",
+            "boolean_01"
+          ]
+        },
+        "timeout_s": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        }
+      }
+    },
+    "operation": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "id",
+            "order",
+            "operation",
+            "source_atom_id",
+            "binding_id",
+            "origin",
+            "resolved"
+          ],
+          "properties": {
+            "id": {
+              "type": "string",
+              "pattern": "^op-[0-9]{4}$"
+            },
+            "order": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "operation": {
+              "const": "send_command"
+            },
+            "source_atom_id": {
+              "type": "string",
+              "pattern": "^atom-[0-9]{4}$"
+            },
+            "binding_id": {
+              "$ref": "#/$defs/nonempty"
+            },
+            "origin": {
+              "const": "profile_mapping"
+            },
+            "resolved": {
+              "$ref": "#/$defs/send_command"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "id",
+            "order",
+            "operation",
+            "source_atom_id",
+            "binding_id",
+            "origin",
+            "resolved"
+          ],
+          "properties": {
+            "id": {
+              "type": "string",
+              "pattern": "^op-[0-9]{4}$"
+            },
+            "order": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "operation": {
+              "const": "wait_telemetry"
+            },
+            "source_atom_id": {
+              "type": "string",
+              "pattern": "^atom-[0-9]{4}$"
+            },
+            "binding_id": {
+              "$ref": "#/$defs/nonempty"
+            },
+            "origin": {
+              "const": "scenario_expectation_plus_profile_observation_policy"
+            },
+            "resolved": {
+              "$ref": "#/$defs/wait_telemetry"
+            }
+          }
+        }
+      ]
+    },
+    "diagnostic": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "owner",
+        "producer",
+        "phase",
+        "severity",
+        "code",
+        "message",
+        "atom_id"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/nonempty"
+        },
+        "owner": {
+          "const": "integration"
+        },
+        "producer": {
+          "const": "orbitfabric-openc3-cosmos"
+        },
+        "phase": {
+          "const": "verification_projection"
+        },
+        "severity": {
+          "enum": [
+            "INFO",
+            "WARNING",
+            "ERROR"
+          ]
+        },
+        "code": {
+          "$ref": "#/$defs/nonempty"
+        },
+        "message": {
+          "$ref": "#/$defs/nonempty"
+        },
+        "atom_id": {
+          "type": "string",
+          "pattern": "^atom-[0-9]{4}$"
+        }
+      }
+    }
+  }
+}

@@ -17,26 +17,30 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout adapter
+        uses: actions/checkout@v4
+
+      - name: Checkout exact OrbitFabric Core baseline
+        uses: actions/checkout@v4
+        with:
+          repository: FAROTECH/orbitfabric
+          ref: 4377d6656c62aa1dc19a7ed81d2de872b6b22ccd
+          path: _orbitfabric_core
 
       - uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
 
-      - name: Install template and tools
+      - name: Install adapter and tools
         run: |
           python -m pip install --upgrade pip
           python -m pip install -e ".[dev]"
 
-      - name: Install exact OrbitFabric Core conformance baseline
-        run: |
-          python -m pip install "orbitfabric @ git+https://github.com/FAROTECH/orbitfabric.git@4377d6656c62aa1dc19a7ed81d2de872b6b22ccd"
-
       - name: Ruff
         run: ruff check .
 
-      - name: Template consistency
-        run: python tools/check_template_consistency.py
+      - name: Adapter consistency and product-hygiene check
+        run: python tools/check_adapter_consistency.py
 
       - name: Tests
         run: pytest -q
@@ -54,8 +58,9 @@ jobs:
           with zipfile.ZipFile(wheel) as archive:
               names = set(archive.namelist())
           required = {
-              "orbitfabric_dummy_adapter/integration_package.json",
-              "orbitfabric_dummy_adapter/schemas/profile-0.1.schema.json",
+              "orbitfabric_openc3_cosmos_adapter/integration_package.json",
+              "orbitfabric_openc3_cosmos_adapter/schemas/profile-0.1.schema.json",
+              "orbitfabric_openc3_cosmos_adapter/schemas/verification-projection-plan-0.1.schema.json",
           }
           missing = sorted(required - names)
           if missing:
@@ -65,12 +70,12 @@ jobs:
       - name: Build documentation
         run: mkdocs build --strict
 
-  installed-lifecycle:
+  target-compatibility-cosmos:
     needs: checks
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Template
+      - name: Checkout adapter
         uses: actions/checkout@v4
 
       - name: Checkout exact OrbitFabric Core baseline
@@ -80,8 +85,51 @@ jobs:
           ref: 4377d6656c62aa1dc19a7ed81d2de872b6b22ccd
           path: _orbitfabric_core
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
+      - name: Checkout validated OpenC3 COSMOS target baseline
+        uses: actions/checkout@v4
+        with:
+          repository: OpenC3/cosmos
+          ref: v7.3.0
+          path: _cosmos
+          sparse-checkout: |
+            openc3/python/openc3/script
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install adapter and tools
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -e ".[dev]"
+
+      - name: Run OpenC3 COSMOS compatibility control
+        run: bash .github/scripts/cosmos-target-compatibility.sh
+
+      - name: Upload OpenC3 COSMOS compatibility evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: openc3-cosmos-target-compatibility
+          path: /tmp/orbitfabric-openc3-cosmos-target-compatibility/evidence
+          if-no-files-found: warn
+
+  installed-lifecycle:
+    needs: checks
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout adapter
+        uses: actions/checkout@v4
+
+      - name: Checkout exact OrbitFabric Core baseline
+        uses: actions/checkout@v4
+        with:
+          repository: FAROTECH/orbitfabric
+          ref: 4377d6656c62aa1dc19a7ed81d2de872b6b22ccd
+          path: _orbitfabric_core
+
+      - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
 
@@ -98,8 +146,8 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: adapter-template-installed-lifecycle
-          path: /tmp/orbitfabric-template-installed-lifecycle/evidence
+          name: openc3-cosmos-adapter-installed-lifecycle
+          path: /tmp/orbitfabric-openc3-cosmos-installed-lifecycle/evidence
           if-no-files-found: warn
 
   release-proof:
@@ -107,7 +155,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Template
+      - name: Checkout adapter
         uses: actions/checkout@v4
 
       - name: Checkout exact OrbitFabric Core baseline
@@ -117,8 +165,7 @@ jobs:
           ref: 4377d6656c62aa1dc19a7ed81d2de872b6b22ccd
           path: _orbitfabric_core
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
+      - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
 
@@ -135,6 +182,6 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: adapter-template-release-proof
-          path: /tmp/orbitfabric-template-release-proof/evidence
+          name: openc3-cosmos-adapter-release-proof
+          path: /tmp/orbitfabric-openc3-cosmos-release-proof/evidence
           if-no-files-found: warn

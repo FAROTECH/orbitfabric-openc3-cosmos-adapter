@@ -3,9 +3,9 @@ requires = ["hatchling>=1.24"]
 build-backend = "hatchling.build"
 
 [project]
-name = "orbitfabric-dummy-adapter"
+name = "orbitfabric-openc3-cosmos-adapter"
 version = "0.1.0.dev0"
-description = "Executable dummy adapter shipped with the OrbitFabric Adapter Developer Template."
+description = "OrbitFabric adapter for OpenC3 COSMOS verification projection."
 readme = "README.md"
 requires-python = ">=3.11"
 license = { text = "Apache-2.0" }
@@ -13,6 +13,7 @@ authors = [
   { name = "OrbitFabric Contributors" }
 ]
 dependencies = [
+  "orbitfabric @ git+https://github.com/FAROTECH/orbitfabric.git@4377d6656c62aa1dc19a7ed81d2de872b6b22ccd",
   "PyYAML>=6.0",
   "jsonschema>=4.23",
   "rfc8785>=0.1.4"
@@ -27,10 +28,13 @@ dev = [
 ]
 
 [project.scripts]
-orbitfabric-dummy-adapter = "orbitfabric_dummy_adapter.cli:main"
+orbitfabric-openc3-cosmos = "orbitfabric_openc3_cosmos_adapter.cli:main"
+
+[tool.hatch.metadata]
+allow-direct-references = true
 
 [tool.hatch.build.targets.wheel]
-packages = ["src/orbitfabric_dummy_adapter"]
+packages = ["src/orbitfabric_openc3_cosmos_adapter"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

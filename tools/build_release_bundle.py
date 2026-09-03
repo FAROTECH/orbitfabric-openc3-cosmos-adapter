@@ -87,10 +87,7 @@ def build_project_lock(
                 "source_coordinate": descriptor["source_coordinate"],
                 "release_version": descriptor["release_version"],
                 "release_descriptor": {"sha256": descriptor_sha256},
-                "artifact": {
-                    "id": artifact_id,
-                    "sha256": artifact["sha256"],
-                },
+                "artifact": {"id": artifact_id, "sha256": artifact["sha256"]},
                 "installation_backend": {"id": backend_id},
             }
         ],
@@ -100,13 +97,6 @@ def build_project_lock(
 def write_json(path: Path, payload: dict[str, Any]) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
-
-
-def write_sha256_summary(path: Path, entries: list[tuple[str, str]]) -> None:
-    path.write_text(
-        "\n".join(f"{digest}  {name}" for digest, name in entries) + "\n",
-        encoding="utf-8",
-    )
 
 
 def parser() -> argparse.ArgumentParser:
@@ -127,14 +117,7 @@ def parser() -> argparse.ArgumentParser:
     result.add_argument("--artifact-id", default="python-wheel")
     result.add_argument("--artifact-type", default="python-wheel")
     result.add_argument("--backend-id", default="python-wheel-managed-env")
-    result.add_argument(
-        "--release-only",
-        action="store_true",
-        help=(
-            "Build publisher-owned release material only: adapter-release.json and "
-            "a SHA256SUMS file for the wheel and Release Descriptor."
-        ),
-    )
+    result.add_argument("--release-only", action="store_true")
     return result
 
 
@@ -146,24 +129,7 @@ def main(argv: list[str] | None = None) -> int:
         raise SystemExit(f"Wheel does not exist: {wheel}")
 
     manifest = (args.manifest or discover_manifest(root)).resolve()
-    if not manifest.is_file():
-        raise SystemExit(f"Integration Package Manifest does not exist: {manifest}")
-
     version = args.release_version or project_version(args.pyproject)
-    required_values = [
-        ("authority", args.authority),
-        ("publisher", args.publisher),
-        ("name", args.name),
-        ("release version", version),
-        ("artifact id", args.artifact_id),
-        ("artifact type", args.artifact_type),
-    ]
-    if not args.release_only:
-        required_values.append(("backend id", args.backend_id))
-
-    for label, value in required_values:
-        if not isinstance(value, str) or not value.strip():
-            raise SystemExit(f"{label} must be non-empty")
 
     descriptor = build_release_descriptor(
         wheel=wheel,
@@ -181,11 +147,7 @@ def main(argv: list[str] | None = None) -> int:
     write_json(descriptor_path, descriptor)
     descriptor_sha = sha256_file(descriptor_path)
 
-    sums_entries = [
-        (sha256_file(wheel), wheel.name),
-        (descriptor_sha, descriptor_path.name),
-    ]
-
+    entries = [(sha256_file(wheel), wheel.name), (descriptor_sha, descriptor_path.name)]
     lock_path: Path | None = None
     if not args.release_only:
         lock = build_project_lock(
@@ -196,20 +158,22 @@ def main(argv: list[str] | None = None) -> int:
         )
         lock_path = output_dir / "adapter-project-lock.json"
         write_json(lock_path, lock)
-        sums_entries.extend(
+        entries.extend(
             [
                 (sha256_file(lock_path), lock_path.name),
                 (sha256_file(manifest), manifest.name),
             ]
         )
 
-    sums_path = output_dir / "SHA256SUMS"
-    write_sha256_summary(sums_path, sums_entries)
-
+    sums = output_dir / "SHA256SUMS"
+    sums.write_text(
+        "\n".join(f"{digest}  {name}" for digest, name in entries) + "\n",
+        encoding="utf-8",
+    )
     print(f"Release Descriptor: {descriptor_path}")
     if lock_path is not None:
         print(f"Project Lock: {lock_path}")
-    print(f"SHA-256 summary: {sums_path}")
+    print(f"SHA-256 summary: {sums}")
     return 0
 
 

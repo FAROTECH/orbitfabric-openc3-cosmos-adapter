@@ -1,205 +1,85 @@
-# OrbitFabric Adapter Developer Template
+# OrbitFabric OpenC3 COSMOS Adapter
 
-Executable starting point for building, testing, packaging, releasing and documenting an OrbitFabric adapter.
+Canonical OrbitFabric adapter for projecting mission verification intent toward OpenC3 COSMOS.
 
-Use this repository when you want to create an adapter that consumes OrbitFabric integration surfaces and projects them toward a concrete downstream target.
+This repository is the productized successor of the historical `FAROTECH/OrbitFabric-OpenC3-COSMOS-PoC`. The PoC remains engineering evidence and a regression reference; this repository owns the reusable adapter product.
 
-OrbitFabric Core remains the normative authority for generic contracts, schemas, conformance and Adapter Manager lifecycle semantics. This Template demonstrates how an adapter repository can consume those contracts correctly.
+## Current scope
 
-## Start here
-
-```bash
-python -m venv .venv
-source .venv/bin/activate
-python -m pip install --upgrade pip
-python -m pip install -e ".[dev]"
-python -m pip install "orbitfabric @ git+https://github.com/FAROTECH/orbitfabric.git@4377d6656c62aa1dc19a7ed81d2de872b6b22ccd"
-
-ruff check .
-python tools/check_template_consistency.py
-pytest -q
-python -m build --wheel
-mkdocs build --strict
-```
-
-Then follow [Getting Started](docs/getting-started.md) and [Repository Anatomy](docs/repository-anatomy.md).
-
-The developer guide is authored in `docs/`, built with MkDocs and validated with `mkdocs build --strict` in CI.
-
-## Two ways to use the Template
-
-### Learning mode
-
-Clone the repository unchanged, run the Dummy Adapter and inspect the full lifecycle. This is the fastest way to understand the contract and repository shape before targeting a real downstream.
-
-### Creation mode
-
-Start from a fresh repository created from this Template, then initialize only developer-owned identity:
-
-```bash
-python tools/initialize_adapter.py \
-  --adapter-name my-target \
-  --python-package orbitfabric_my_target_adapter \
-  --console-script orbitfabric-my-target
-```
-
-The initializer updates packaging and execution identity consistently, but it deliberately does not choose official publisher identity, Source Coordinate, release maturity, supported target claims or Integration Coverage claims. Those remain maintainer decisions.
-
-Read [Adapter Identity](docs/adapter-identity.md) before using overrides such as a custom distribution name or `adapter.id`.
-
-## What the Dummy Adapter demonstrates
-
-The included Dummy Adapter deliberately has a small declared scope:
-
-- project telemetry entity identity into a synthetic target representation;
-- project Scenario identity and provenance into a synthetic verification plan.
-
-It exercises both supported execution shapes:
+The initial adapter product focuses on Scenario-driven verification projection:
 
 ```text
-project
-    zero operation inputs
+OrbitFabric Scenario
+    + Core Integration Input Set
+    + OpenC3 COSMOS Projection Profile
+        -> verification_projection
+        -> resolved COSMOS verification plan
+        -> native COSMOS Python procedure / suite
+        -> Core-conformant Integration Result
+```
 
+The initial canonical operation is:
+
+```text
 verification_projection
-    one required file-backed role: scenario
+    required operation input: scenario
 ```
 
-The Dummy target is synthetic. Its semantics are examples only and do not extend OrbitFabric Core.
+A broader `project` operation is not declared merely for symmetry. It will be added only when concrete Ground integration evidence justifies a coherent mission-data projection surface.
 
-The Template also proves:
+## Target baseline
+
+The first productization baseline preserves the downstream version already validated by the PoC:
 
 ```text
-Core contract conformance
-    -> Python wheel build
-    -> Adapter Manager isolated install
-    -> installed verify
-    -> installed execute
-    -> Integration Result validation
-    -> remove
-    -> empty inventory
-
-exact release artifact
-    -> Adapter Release Descriptor
-    -> Adapter Project Lock
-    -> MISSING
-    -> exact install from lock
-    -> MATCH
-    -> repeated request NOOP
+OpenC3 COSMOS v7.3.0
 ```
 
-## Adapter repository anatomy
+Target-native validation and release evidence remain separate from OrbitFabric Core contract conformance.
 
-A concrete adapter repository normally needs these areas:
+## Product identity
 
 ```text
-identity
-packaging
-integration contract
-projection
-implementation
-conformance
-evidence
-developer experience
-automation
+repository       orbitfabric-openc3-cosmos-adapter
+distribution     orbitfabric-openc3-cosmos-adapter
+python package   orbitfabric_openc3_cosmos_adapter
+console command  orbitfabric-openc3-cosmos
+adapter.id       orbitfabric-openc3-cosmos
+integration.id   orbitfabric-openc3-cosmos
+version          0.1.0.dev0
 ```
 
-This Template provides a working example of each area. See [Repository Anatomy](docs/repository-anatomy.md) for the exact files and responsibilities.
-
-## What you replace for a real adapter
-
-At minimum, review and deliberately replace:
+## Ownership boundary
 
 ```text
-Python distribution name and package namespace
-console script name
-adapter.id and integration.id
-release Source Coordinate
-adapter version
-Integration Package Manifest
-supported Core input surfaces
-Projection Profile schema
-Projection Profile example and bindings
-target-specific projection code
-target artifact formats
-examples and fixtures
-target compatibility tests
-Integration Coverage Matrix
-release identity values
+OrbitFabric Core
+    owns generic integration contracts and Adapter Manager lifecycle semantics
+
+This adapter
+    owns OpenC3 COSMOS projection semantics, bindings, generated target artifacts,
+    target compatibility controls and target-specific evidence
+
+OpenC3 COSMOS
+    owns downstream execution semantics and runtime acceptance
 ```
 
-Do not rename fields or change semantics that belong to Core-owned contracts. If this Template and OrbitFabric Core disagree, Core wins.
+The adapter does not promote COSMOS-specific plan or runtime semantics into OrbitFabric Core.
 
-Read [Adapter Identity](docs/adapter-identity.md) before changing identifiers, and [Projection Profile and Bindings](docs/projection-profile-and-bindings.md) before changing projection semantics.
+## Development status
 
-## Repository map
+The `0.1.0.dev0` product baseline is under active development. Product code is extracted from the historical PoC deliberately, without importing experiment/G6/G9 scaffolding as permanent product structure.
+
+Integration Coverage is a release-readiness obligation and is tracked separately in `FAROTECH/OrbitFabric-Architecture-Lab#22`; it is intentionally not a bootstrap blocker.
+
+## Reference baselines
+
+The repository follows the canonical adapter patterns proven by:
+
+- `FAROTECH/orbitfabric-adapter-template`
+- `FAROTECH/orbitfabric-openobsw-opensvf-adapter`
+
+The exact OrbitFabric Core development/conformance baseline is:
 
 ```text
-src/orbitfabric_dummy_adapter/
-    adapter implementation
-    integration_package.json
-    schemas/profile-0.1.schema.json
-
-examples/
-    synthetic input set, Projection Profile and Scenario
-
-tests/
-    positive, negative, contract and package checks
-
-coverage/
-    completed Dummy Integration Coverage Matrix
-    reusable coverage template
-
-docs/
-    developer guidance
-
-tools/
-    adapter identity initializer
-    template consistency check
-    release bundle builder
-
-.github/
-    CI
-    isolated installed lifecycle proof
-    provider-neutral release proof
+4377d6656c62aa1dc19a7ed81d2de872b6b22ccd
 ```
-
-## Developer documentation
-
-Recommended reading order:
-
-1. [Getting Started](docs/getting-started.md)
-2. [Repository Anatomy](docs/repository-anatomy.md)
-3. [Adapter Identity](docs/adapter-identity.md)
-4. [Architecture and Ownership](docs/architecture-and-ownership.md)
-5. [Integration Contracts](docs/integration-contracts.md)
-6. [Projection Profile and Bindings](docs/projection-profile-and-bindings.md)
-7. [Testing and Conformance](docs/testing-and-conformance.md)
-8. [Evidence and Traceability](docs/evidence-and-traceability.md)
-9. [Runtime Dependencies](docs/runtime-dependencies.md)
-10. [Release Lifecycle](docs/release-lifecycle.md)
-11. [Integration Coverage](docs/integration-coverage.md)
-12. [Adapter Readiness Checklist](docs/adapter-readiness-checklist.md)
-
-## Validation baseline
-
-The repository continuously validates the complete developer pattern against the pinned OrbitFabric Core baseline.
-
-CI verifies:
-
-```text
-Python 3.11 and 3.12
-Ruff
-Template identity and package consistency
-positive and negative adapter tests
-Core Integration Package conformance
-Core Integration Result conformance
-wheel build and packaged assets
-strict MkDocs build
-isolated Adapter Manager install, verify, execute and remove
-exact Adapter Release Descriptor construction
-Adapter Project Lock MISSING -> MATCH behavior
-repeated install request NOOP behavior
-release and lifecycle evidence retention
-```
-
-A concrete adapter should add the strongest meaningful downstream-native compatibility control available for its target. Core conformance and downstream acceptance are separate checks.

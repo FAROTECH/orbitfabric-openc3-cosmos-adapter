@@ -1,0 +1,29 @@
+kind: orbitfabric.projection_profile
+profile_version: 0.1-candidate
+profile:
+  id: openc3-cosmos-demo-3u
+  version: 0.1.0
+  description: COSMOS mapping for the consumer Scenario Verification Projection example.
+integration:
+  id: orbitfabric-openc3-cosmos
+  schema_version: 0.1-candidate
+settings:
+  target_name: OFDEMO
+  telemetry_wait_timeout_s: 5
+bindings:
+  - id: cmd.stop_acquisition
+    intent: project
+    sources:
+      - domain: commands
+        id: payload.stop_acquisition
+    config:
+      cosmos_command: STOP_ACQUISITION
+  - id: tm.acquisition_active
+    intent: project
+    sources:
+      - domain: telemetry
+        id: payload.acquisition.active
+    config:
+      cosmos_packet: STATUS
+      cosmos_item: ACQUISITION_ACTIVE
+      value_encoding: boolean_01

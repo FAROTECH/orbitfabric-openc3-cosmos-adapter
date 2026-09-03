@@ -4,7 +4,7 @@ Integration Coverage describes which OrbitFabric semantics are applicable to the
 
 It is not a count of OpenC3 COSMOS product features and it is not a generic OrbitFabric Core conformance contract.
 
-The maintained row-by-row declaration is stored in the repository at:
+The complete user-facing matrix is visible directly in the repository [README](../README.md). The detailed maintainer declaration, rationale and roadmap are stored at:
 
 ```text
 coverage/integration-coverage.md
@@ -121,40 +121,53 @@ Canonical native acceptance harness
     product wheel -> canonical generated procedure / suite
     native COSMOS plugin build / validate / load
     external OFDEMO TCP command + telemetry path
-    Script Runner / CTRF validation
+    persistent Script Runner completion
+    persisted native report -> OpenC3 CTRF conversion
     joined adapter-owned runtime evidence
 
 Historical COSMOS PoC
-    previously accepted local native v7.3.0 runtime evidence
+    previous native v7.3.0 runtime evidence
     retained as engineering evidence and regression reference
 ```
 
-The canonical harness now exists in this product repository. Its presence does not by itself constitute a native runtime PASS.
+## Canonical native acceptance status
 
-Historical PoC evidence supports semantic feasibility but is not silently treated as canonical release evidence.
+The product-owned native harness has now produced a clean PASS on exact adapter commit:
+
+```text
+44915686358da7334540d4fa1aca9e204d8a4ac9
+```
+
+against:
+
+```text
+OpenC3 COSMOS  v7.3.0
+cosmos-project 9eb454f06fe0113d05aa6945d88b627155a2aa47
+```
+
+The accepted run proved in one execution:
+
+```text
+real STOP_ACQUISITION transport to the external OFDEMO target
+real STATUS telemetry return with acquisition_active=false
+native COSMOS Script Runner state completed
+persisted native Script Runner report
+OpenC3-native report -> CTRF conversion
+CTRF tests 1 / passed 1 / failed 0
+joined native-runtime-evidence status passed
+```
+
+The full runtime remains intentionally separate from mandatory GitHub-hosted CI while the required host/container topology is environment-dependent. Hosted CI proves source/API compatibility; the native harness proves the target runtime claim.
+
+Historical PoC evidence remains useful as regression evidence but is not substituted for this canonical product-owned acceptance.
 
 ## Release-readiness implication
 
-Integration Coverage analysis is complete for the current baseline, and the decision to productize a canonical native runtime acceptance path has been made.
+Integration Coverage analysis is complete for the current baseline and the canonical native runtime path has passed on the current candidate source commit.
 
-The remaining target-evidence gate is operational rather than architectural:
+Before release freeze, the same native acceptance must be repeated against the exact accepted source commit after merge so release evidence is tied to the source that will actually be published.
 
-```text
-run tools/run_native_cosmos_acceptance.sh
-against one clean exact canonical adapter commit
-in a topology that supports the external OFDEMO simulator path
-
-require:
-    native plugin build / validation / load
-    real TCP command + telemetry transport
-    native Script Runner execution
-    exactly one CTRF PASS
-    adapter-owned joined runtime evidence
-```
-
-Until that canonical native PASS exists, the repository must not claim that hosted CI provides full COSMOS runtime acceptance.
-
-This is a target acceptance decision, not a reason to widen the semantic scope.
+This is an evidence and provenance gate, not a reason to widen the semantic scope.
 
 ## Evidence rule
 

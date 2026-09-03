@@ -60,7 +60,9 @@ def _is_ctrf_payload(value: Any) -> bool:
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description="Validate canonical COSMOS CTRF acceptance output.")
+    parser = argparse.ArgumentParser(
+        description="Validate canonical COSMOS CTRF acceptance output."
+    )
     parser.add_argument("--input", type=Path, required=True, help="Raw Script Runner stdout")
     parser.add_argument("--output", type=Path, required=True, help="Normalized CTRF JSON")
     args = parser.parse_args()

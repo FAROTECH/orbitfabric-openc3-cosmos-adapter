@@ -104,6 +104,57 @@ cosmos_cli() {
   )
 }
 
+cosmos_report_to_ctrf() {
+  local report_path="$1"
+
+  local compose_args=(
+    docker compose
+    --project-directory "${COSMOS_PROJECT_DIR}"
+    --env-file "${COSMOS_PROJECT_DIR}/.env"
+  )
+  if [[ -f "${COSMOS_PROJECT_DIR}/.env.local" ]]; then
+    compose_args+=(--env-file "${COSMOS_PROJECT_DIR}/.env.local")
+  fi
+  compose_args+=(-f "${COSMOS_PROJECT_DIR}/compose.yaml")
+  if [[ -f "${COSMOS_PROJECT_DIR}/compose.override.yaml" ]]; then
+    compose_args+=(-f "${COSMOS_PROJECT_DIR}/compose.override.yaml")
+  fi
+
+  (
+    cd "${COSMOS_PROJECT_DIR}"
+    "${compose_args[@]}" run -T --rm \
+      -e OPENC3_API_PASSWORD="${OPENC3_API_PASSWORD}" \
+      --no-deps \
+      openc3-cosmos-cmd-tlm-api \
+      ruby \
+        -ropenc3 \
+        -ropenc3/utilities/bucket \
+        -ropenc3/utilities/ctrf \
+        -rjson \
+        -e '
+report_path = ARGV.fetch(0)
+tmp_path = "/tmp/orbitfabric-script-report-#{Process.pid}.txt"
+
+begin
+  OpenC3::Bucket.getClient().get_object(
+    bucket: ENV.fetch("OPENC3_LOGS_BUCKET"),
+    key: report_path,
+    path: tmp_path
+  )
+
+  unless File.file?(tmp_path)
+    raise "COSMOS Script Runner report not found: #{report_path}"
+  end
+
+  report = File.binread(tmp_path)
+  puts JSON.generate(OpenC3::Ctrf.convert_report(report))
+ensure
+  File.delete(tmp_path) if File.exist?(tmp_path)
+end
+' "${report_path}"
+  )
+}
+
 require_command git
 require_command docker
 require_command curl
@@ -321,16 +372,86 @@ if ! wait_for_log_event "${EVIDENCE_DIR}/simulator.jsonl" telemetry_client_conne
 fi
 
 log "running canonical generated suite through COSMOS Script Runner"
-cosmos_cli "${COSMOS_PROJECT_DIR}" script run \
-  OFDEMO/procedures/verification_suite.py \
-  --suite OrbitFabricVerificationSuite \
-  --group OrbitFabricVerificationGroup \
-  --script test_scenario \
-  --format ctrf \
-  >"${EVIDENCE_DIR}/script-runner.stdout" 2>"${EVIDENCE_DIR}/script-runner.stderr"
+
+: >"${EVIDENCE_DIR}/script-runner.stdout"
+: >"${EVIDENCE_DIR}/script-runner.stderr"
+
+SCRIPT_ID="$(
+  cosmos_cli "${COSMOS_PROJECT_DIR}" script spawn \
+    OFDEMO/procedures/verification_suite.py \
+    --suite OrbitFabricVerificationSuite \
+    --group OrbitFabricVerificationGroup \
+    --script test_scenario \
+    2>>"${EVIDENCE_DIR}/script-runner.stderr" \
+    | tee "${EVIDENCE_DIR}/script-runner.stdout" \
+    | tail -n 1
+)"
+
+if [[ ! "${SCRIPT_ID}" =~ ^[0-9]+$ ]]; then
+  echo "Unexpected COSMOS Script Runner id: ${SCRIPT_ID}" >&2
+  exit 1
+fi
+
+printf '%s\n' "${SCRIPT_ID}" >"${EVIDENCE_DIR}/script-id.txt"
+log "spawned COSMOS Script Runner id ${SCRIPT_ID}"
+
+terminal_state_seen=0
+for _ in {1..20}; do
+  cosmos_cli "${COSMOS_PROJECT_DIR}" script status "${SCRIPT_ID}" --verbose \
+    >"${EVIDENCE_DIR}/script-status.txt" 2>&1 || true
+
+  if grep -qE \
+    '"state"[[:space:]]*=>[[:space:]]*"(completed|completed_errors|crashed|killed|stopped)"' \
+    "${EVIDENCE_DIR}/script-status.txt"; then
+    terminal_state_seen=1
+    break
+  fi
+
+  sleep 2
+done
+
+if [[ "${terminal_state_seen}" != "1" ]]; then
+  cat "${EVIDENCE_DIR}/script-status.txt" >&2 || true
+  echo "COSMOS Script Runner did not reach a terminal persistent state" >&2
+  exit 1
+fi
+
+if ! grep -qE \
+  '"state"[[:space:]]*=>[[:space:]]*"completed"' \
+  "${EVIDENCE_DIR}/script-status.txt"; then
+  cat "${EVIDENCE_DIR}/script-status.txt" >&2
+  echo "COSMOS Script Runner did not complete successfully" >&2
+  exit 1
+fi
+
+REPORT_PATH="$(
+  "${PYTHON}" - "${EVIDENCE_DIR}/script-status.txt" <<'PY_STATUS'
+from pathlib import Path
+import re
+import sys
+
+text = Path(sys.argv[1]).read_text(encoding="utf-8")
+match = re.search(r'"report"\s*=>\s*"([^"]+)"', text)
+if match:
+    print(match.group(1))
+PY_STATUS
+)"
+
+if [[ -z "${REPORT_PATH}" ]]; then
+  cat "${EVIDENCE_DIR}/script-status.txt" >&2
+  echo "Completed COSMOS Script Runner state has no persisted report" >&2
+  exit 1
+fi
+
+printf '%s\n' "${REPORT_PATH}" >"${EVIDENCE_DIR}/script-report-path.txt"
+
+log "converting persisted COSMOS Script Runner report to CTRF"
+cosmos_report_to_ctrf "${REPORT_PATH}" \
+  >"${EVIDENCE_DIR}/script-report-ctrf.stdout" \
+  2>"${EVIDENCE_DIR}/script-report-ctrf.stderr"
 
 "${PYTHON}" "${ROOT}/tools/validate_cosmos_ctrf.py" \
-  --input "${EVIDENCE_DIR}/script-runner.stdout" \
+  --input "${EVIDENCE_DIR}/script-report-ctrf.stdout" \
   --output "${EVIDENCE_DIR}/ctrf.json" \
   >"${EVIDENCE_DIR}/ctrf-validation.log" 2>&1
 

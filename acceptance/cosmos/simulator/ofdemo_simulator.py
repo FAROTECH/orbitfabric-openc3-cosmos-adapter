@@ -83,7 +83,7 @@ def serve_telemetry(state: SimulatorState, host: str, port: int) -> None:
         while not state.stop.is_set():
             try:
                 client, address = server.accept()
-            except socket.timeout:
+            except TimeoutError:
                 continue
 
             emit("telemetry_client_connected", peer=list(address))
@@ -108,7 +108,7 @@ def serve_commands(state: SimulatorState, host: str, port: int) -> None:
         while not state.stop.is_set():
             try:
                 client, address = server.accept()
-            except socket.timeout:
+            except TimeoutError:
                 continue
 
             emit("command_client_connected", peer=list(address))
@@ -117,7 +117,7 @@ def serve_commands(state: SimulatorState, host: str, port: int) -> None:
                 while not state.stop.is_set():
                     try:
                         data = client.recv(4096)
-                    except socket.timeout:
+                    except TimeoutError:
                         continue
                     if not data:
                         break

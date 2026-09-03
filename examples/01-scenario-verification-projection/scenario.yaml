@@ -1,0 +1,16 @@
+scenario:
+  id: cosmos_product_example
+  name: COSMOS Scenario Verification Projection
+  description: Stop the reference payload acquisition and verify inactive telemetry.
+mission:
+  path: mission
+initial_state:
+  mode: NOMINAL
+  telemetry:
+    payload.acquisition.active: true
+steps:
+  - t: 1
+    command: payload.stop_acquisition
+  - t: 2
+    expect_telemetry:
+      payload.acquisition.active: false

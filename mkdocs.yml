@@ -1,5 +1,5 @@
 site_name: OrbitFabric OpenC3 COSMOS Adapter
-site_description: Developer and integration guide for the OrbitFabric OpenC3 COSMOS adapter.
+site_description: User, developer and publisher guide for the OrbitFabric OpenC3 COSMOS adapter.
 site_url: https://farotech.github.io/orbitfabric-openc3-cosmos-adapter/
 repo_url: https://github.com/FAROTECH/orbitfabric-openc3-cosmos-adapter
 repo_name: FAROTECH/orbitfabric-openc3-cosmos-adapter
@@ -35,14 +35,20 @@ markdown_extensions:
 
 nav:
   - Home: index.md
-  - Getting Started: getting-started.md
-  - Adapter Identity: adapter-identity.md
-  - Architecture and Ownership: architecture-and-ownership.md
-  - Integration Contracts: integration-contracts.md
-  - Projection Profile and Bindings: projection-profile-and-bindings.md
-  - Testing and Conformance: testing-and-conformance.md
-  - Native COSMOS Acceptance: native-cosmos-acceptance.md
-  - Evidence and Traceability: evidence-and-traceability.md
-  - Runtime Dependencies: runtime-dependencies.md
-  - Release Lifecycle: release-lifecycle.md
-  - Integration Coverage: integration-coverage.md
+  - User:
+      - Getting Started: getting-started.md
+      - Product Example: examples.md
+      - Projection Profile and Bindings: projection-profile-and-bindings.md
+      - Runtime Dependencies: runtime-dependencies.md
+      - Integration Coverage: integration-coverage.md
+  - Developer / Contributor:
+      - Development: development.md
+      - Architecture and Ownership: architecture-and-ownership.md
+      - Integration Contracts: integration-contracts.md
+      - Testing and Conformance: testing-and-conformance.md
+  - Maintainer / Publisher:
+      - Publishing: publishing.md
+      - Release Lifecycle: release-lifecycle.md
+      - Native COSMOS Acceptance: native-cosmos-acceptance.md
+      - Evidence and Traceability: evidence-and-traceability.md
+      - Adapter Identity: adapter-identity.md

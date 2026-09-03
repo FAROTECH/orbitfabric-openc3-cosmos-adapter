@@ -23,51 +23,39 @@ OrbitFabric Core
 
 A normal consumer should not need an editable source install, direct repository tooling or publisher release construction.
 
-For the current development baseline, start with **[Getting Started](docs/getting-started.md)** and **[Projection Profile and Bindings](docs/projection-profile-and-bindings.md)**.
+Start with **[Getting Started](docs/getting-started.md)**.
 
 ### I want to try the adapter
 
-The current product focuses on one coherent operation:
+The repository now contains one focused consumer-facing product example:
+
+**[Scenario Verification Projection](examples/01-scenario-verification-projection/README.md)**
 
 ```text
-OrbitFabric Scenario
-    + Core Integration Input Set
-    + OpenC3 COSMOS Projection Profile
-        -> verification_projection
-        -> resolved verification plan
-        -> native COSMOS Python procedure / suite
-        -> Core-conformant Integration Result
+reference Mission Model
+    -> Core Integration Input Set
+    + OrbitFabric Scenario
+    + COSMOS Projection Profile
+    -> installed adapter through Adapter Manager
+    -> verification_projection
+    -> COSMOS Python procedure / suite
 ```
 
-The repository includes a reference Profile at [`examples/profile.yaml`](examples/profile.yaml).
+Permanent CI runs the example after installing a built wheel and removing the adapter `src/` tree. The example therefore proves the managed consumer path rather than an editable-source shortcut.
 
-The generated COSMOS procedure and suite can also be exercised through the canonical native runtime acceptance path described in **[Native OpenC3 COSMOS Acceptance](docs/native-cosmos-acceptance.md)**.
+Start with **[Product Example](docs/examples.md)**.
 
 ### I want to develop or contribute
 
-Clone the repository and use the development environment:
-
-```bash
-git clone https://github.com/FAROTECH/orbitfabric-openc3-cosmos-adapter.git
-cd orbitfabric-openc3-cosmos-adapter
-
-python -m venv .venv
-source .venv/bin/activate
-python -m pip install --upgrade pip
-python -m pip install -e ".[dev]"
-
-ruff check .
-python tools/check_adapter_consistency.py
-pytest -q
-```
-
-The direct adapter console command:
+Clone the repository and use the development environment. The direct adapter console command:
 
 ```text
 orbitfabric-openc3-cosmos
 ```
 
-is primarily a contributor and development surface. See **[Architecture and Ownership](docs/architecture-and-ownership.md)**, **[Integration Contracts](docs/integration-contracts.md)**, **[Testing and Conformance](docs/testing-and-conformance.md)** and [CONTRIBUTING.md](CONTRIBUTING.md).
+is primarily a contributor and development surface.
+
+Start with **[Developer / Contributor Guide](docs/development.md)** and [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ### I maintain or publish the adapter
 
@@ -87,7 +75,7 @@ accepted source commit
 
 A normal consumer must not need to perform these steps.
 
-See **[Release Lifecycle](docs/release-lifecycle.md)** and **[Evidence and Traceability](docs/evidence-and-traceability.md)**.
+Start with **[Maintainer / Publisher Guide](docs/publishing.md)** and [Release Lifecycle](docs/release-lifecycle.md).
 
 ## What the adapter does
 
@@ -152,15 +140,15 @@ verification_projection
     required operation input: scenario
 ```
 
-Current direct development execution:
+Normal installed execution uses Core:
 
 ```bash
-orbitfabric-openc3-cosmos run \
+orbitfabric adapter execute "$ORBITFABRIC_ADAPTER_INSTANCE_ID" \
   --operation verification_projection \
-  --input-set-manifest <core-input>/integration_input_manifest.json \
-  --profile examples/profile.yaml \
-  --operation-input scenario <scenario.yaml> \
-  --output-dir /tmp/orbitfabric-cosmos
+  --input-set-manifest <integration_input_manifest.json> \
+  --profile <projection-profile.yaml> \
+  --operation-input "scenario=<scenario.yaml>" \
+  --output-dir <output-directory>
 ```
 
 Representative outputs:
@@ -260,9 +248,9 @@ The detailed maintainer declaration, rationale and roadmap for every row remain 
 
 Changing a pinned downstream baseline is an evidence change, not a documentation-only change.
 
-## Native validation model
+## Validation model
 
-The canonical source baseline is accepted through independent evidence layers:
+The source baseline is accepted through independent evidence layers:
 
 ```text
 Core contract conformance
@@ -272,6 +260,8 @@ adapter-owned tests
 OpenC3 COSMOS source/API compatibility
         +
 installed Adapter Manager lifecycle
+        +
+consumer product example
         +
 release proof
         +
@@ -317,7 +307,7 @@ src/
     adapter implementation and packaged resources
 
 examples/
-    reference product-facing configuration
+    consumer-facing product example and reference inputs
 
 acceptance/
     native COSMOS acceptance fixtures
@@ -329,37 +319,38 @@ tests/
     adapter, contract and acceptance regression controls
 
 docs/
-    user, developer, evidence and release documentation
+    role-separated user, developer and publisher documentation
 
 tools/
     consistency, lifecycle and native acceptance tooling
 
 .github/
-    CI, target compatibility and lifecycle controls
+    CI, target compatibility, installed lifecycle, product example and release proof
 ```
 
 ## Documentation
 
-The repository landing page routes readers by role. The current supporting documents are grouped below by their primary audience; a later documentation pass may split mixed-purpose pages further without changing adapter semantics.
-
 ### User
 
 - [Getting Started](docs/getting-started.md)
+- [Product Example](docs/examples.md)
 - [Projection Profile and Bindings](docs/projection-profile-and-bindings.md)
 - [Runtime Dependencies](docs/runtime-dependencies.md)
 - [Integration Coverage](docs/integration-coverage.md)
 
 ### Developer / Contributor
 
+- [Developer / Contributor Guide](docs/development.md)
 - [Architecture and Ownership](docs/architecture-and-ownership.md)
 - [Integration Contracts](docs/integration-contracts.md)
 - [Testing and Conformance](docs/testing-and-conformance.md)
-- [Native OpenC3 COSMOS Acceptance](docs/native-cosmos-acceptance.md)
 - [CONTRIBUTING.md](CONTRIBUTING.md)
 
 ### Maintainer / Publisher
 
+- [Maintainer / Publisher Guide](docs/publishing.md)
 - [Release Lifecycle](docs/release-lifecycle.md)
+- [Native OpenC3 COSMOS Acceptance](docs/native-cosmos-acceptance.md)
 - [Evidence and Traceability](docs/evidence-and-traceability.md)
 - [Adapter Identity](docs/adapter-identity.md)
 

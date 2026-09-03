@@ -150,6 +150,42 @@ jobs:
           path: /tmp/orbitfabric-openc3-cosmos-installed-lifecycle/evidence
           if-no-files-found: warn
 
+  product-example:
+    needs: installed-lifecycle
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout adapter
+        uses: actions/checkout@v4
+
+      - name: Checkout exact OrbitFabric Core baseline
+        uses: actions/checkout@v4
+        with:
+          repository: FAROTECH/orbitfabric
+          ref: 4377d6656c62aa1dc19a7ed81d2de872b6b22ccd
+          path: _orbitfabric_core
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install host tooling and exact Core baseline
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install build
+          python -m pip install ./_orbitfabric_core
+
+      - name: Run consumer product example
+        run: bash .github/scripts/product-example.sh
+
+      - name: Upload product example evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: openc3-cosmos-adapter-product-example
+          path: /tmp/orbitfabric-openc3-cosmos-product-example/evidence
+          if-no-files-found: warn
+
   release-proof:
     needs: installed-lifecycle
     runs-on: ubuntu-latest

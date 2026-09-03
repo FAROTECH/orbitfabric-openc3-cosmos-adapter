@@ -41,6 +41,7 @@ nav:
   - Integration Contracts: integration-contracts.md
   - Projection Profile and Bindings: projection-profile-and-bindings.md
   - Testing and Conformance: testing-and-conformance.md
+  - Native COSMOS Acceptance: native-cosmos-acceptance.md
   - Evidence and Traceability: evidence-and-traceability.md
   - Runtime Dependencies: runtime-dependencies.md
   - Release Lifecycle: release-lifecycle.md

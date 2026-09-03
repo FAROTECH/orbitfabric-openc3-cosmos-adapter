@@ -106,7 +106,7 @@ Target-applicable areas such as command/telemetry dictionary generation, target/
 
 ## Evidence layers
 
-The current evidence is intentionally separated:
+The evidence model is intentionally separated:
 
 ```text
 Canonical adapter CI
@@ -117,29 +117,44 @@ Canonical adapter CI
     Adapter Manager installed lifecycle
     provider-neutral release proof
 
+Canonical native acceptance harness
+    product wheel -> canonical generated procedure / suite
+    native COSMOS plugin build / validate / load
+    external OFDEMO TCP command + telemetry path
+    Script Runner / CTRF validation
+    joined adapter-owned runtime evidence
+
 Historical COSMOS PoC
-    local native v7.3.0 plugin build/load
-    real TCP command and telemetry transport
-    telemetry decommutation
-    Script Runner execution
-    CTRF PASS
+    previously accepted local native v7.3.0 runtime evidence
+    retained as engineering evidence and regression reference
 ```
+
+The canonical harness now exists in this product repository. Its presence does not by itself constitute a native runtime PASS.
 
 Historical PoC evidence supports semantic feasibility but is not silently treated as canonical release evidence.
 
 ## Release-readiness implication
 
-Integration Coverage analysis is complete for the current baseline.
+Integration Coverage analysis is complete for the current baseline, and the decision to productize a canonical native runtime acceptance path has been made.
 
-One separate target-evidence question remains before freezing the first canonical Ground reference adapter:
+The remaining target-evidence gate is operational rather than architectural:
 
 ```text
-Should the canonical repository carry a reproducible native COSMOS
-runtime acceptance harness/evidence path equivalent in strength to
-what the historical PoC demonstrated locally?
+run tools/run_native_cosmos_acceptance.sh
+against one clean exact canonical adapter commit
+in a topology that supports the external OFDEMO simulator path
+
+require:
+    native plugin build / validation / load
+    real TCP command + telemetry transport
+    native Script Runner execution
+    exactly one CTRF PASS
+    adapter-owned joined runtime evidence
 ```
 
-That question should be answered explicitly. It is a target acceptance decision, not a reason to widen the semantic scope.
+Until that canonical native PASS exists, the repository must not claim that hosted CI provides full COSMOS runtime acceptance.
+
+This is a target acceptance decision, not a reason to widen the semantic scope.
 
 ## Evidence rule
 

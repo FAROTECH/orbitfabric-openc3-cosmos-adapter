@@ -1,0 +1,2 @@
+COMMAND OFDEMO STOP_ACQUISITION BIG_ENDIAN "Stop acquisition in the OrbitFabric canonical acceptance simulator"
+  APPEND_ID_PARAMETER ID 8 UINT 1 1 1 "Command packet identifier"

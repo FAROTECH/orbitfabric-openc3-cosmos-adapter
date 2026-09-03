@@ -1,0 +1,5 @@
+TELEMETRY OFDEMO STATUS BIG_ENDIAN "OrbitFabric canonical acceptance simulator status"
+  APPEND_ID_ITEM ID 8 UINT 2 "Telemetry packet identifier"
+  APPEND_ITEM ACQUISITION_ACTIVE 8 UINT "Acquisition activity state"
+    STATE INACTIVE 0
+    STATE ACTIVE 1

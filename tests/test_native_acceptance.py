@@ -44,6 +44,19 @@ def test_native_acceptance_shell_is_syntactically_valid() -> None:
     )
 
 
+
+def test_native_acceptance_uses_persistent_script_status() -> None:
+    harness = (ROOT / "tools" / "run_native_cosmos_acceptance.sh").read_text(
+        encoding="utf-8"
+    )
+
+    assert "script spawn" in harness
+    assert "script status" in harness
+    assert "cosmos_report_to_ctrf" in harness
+    assert "-ropenc3" in harness
+    assert "-ropenc3/utilities/bucket" in harness
+    assert "script run \\" not in harness
+
 def test_ofdemo_fixture_matches_canonical_projection_profile() -> None:
     plugin = (ROOT / "acceptance" / "cosmos" / "plugin-overlay" / "plugin.txt.in").read_text(
         encoding="utf-8"

@@ -6,6 +6,7 @@ from typing import Any
 
 from orbitfabric import __version__ as orbitfabric_version
 from orbitfabric.model.scenario_loader import ScenarioLoader
+
 from orbitfabric_openc3_cosmos_adapter import __version__ as adapter_version
 
 from .core_input import CoreInputSet, load_core_input_set
@@ -17,7 +18,6 @@ from .profile import (
     ProjectionProfile,
     load_projection_profile,
 )
-
 
 PLAN_KIND = "orbitfabric.openc3_cosmos.verification_projection_plan"
 PLAN_VERSION = "0.1-candidate"

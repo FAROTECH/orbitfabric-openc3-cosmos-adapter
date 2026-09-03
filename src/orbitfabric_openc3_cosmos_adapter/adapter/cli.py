@@ -11,7 +11,6 @@ from .result import failed_result, successful_result, unavailable_operation_inpu
 from .verification_plan import validate_verification_plan
 from .verification_projector import project_verification_scenario
 
-
 OPERATION_ID = "verification_projection"
 SCENARIO_ROLE = "scenario"
 

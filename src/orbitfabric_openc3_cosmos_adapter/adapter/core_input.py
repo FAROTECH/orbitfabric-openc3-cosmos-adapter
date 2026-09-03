@@ -6,7 +6,6 @@ from typing import Any
 
 from .io import load_json, sha256_file
 
-
 REQUIRED_SURFACES = {
     "mission_snapshot",
     "entity_index",

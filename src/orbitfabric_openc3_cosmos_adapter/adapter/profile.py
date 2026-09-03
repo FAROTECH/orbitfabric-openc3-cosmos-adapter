@@ -8,7 +8,6 @@ from jsonschema import Draft202012Validator
 
 from .io import load_json, load_yaml, sha256_file
 
-
 INTEGRATION_ID = "orbitfabric-openc3-cosmos"
 INTEGRATION_SCHEMA_VERSION = "0.1-candidate"
 SCHEMA_PATH = Path(__file__).resolve().parents[1] / "schemas" / "profile-0.1.schema.json"
@@ -51,7 +50,9 @@ def load_projection_profile(path: Path) -> ProjectionProfile:
     if errors:
         first = errors[0]
         location = ".".join(str(item) for item in first.absolute_path) or "<root>"
-        raise ValueError(f"Projection Profile schema validation failed at {location}: {first.message}")
+        raise ValueError(
+            f"Projection Profile schema validation failed at {location}: {first.message}"
+        )
 
     profile = document["profile"]
     integration = document["integration"]

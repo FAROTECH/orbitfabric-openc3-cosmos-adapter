@@ -8,7 +8,6 @@ from orbitfabric_openc3_cosmos_adapter import __version__ as adapter_version
 from .io import sha256_file, write_json
 from .profile import INTEGRATION_ID, INTEGRATION_SCHEMA_VERSION
 
-
 RESULT_VERSION = "0.2-candidate"
 ADAPTER_ID = INTEGRATION_ID
 CAPABILITIES = [

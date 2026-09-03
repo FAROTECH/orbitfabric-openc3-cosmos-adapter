@@ -8,7 +8,6 @@ from jsonschema import Draft202012Validator
 from .io import load_json
 from .verification_projector import PLAN_KIND, PLAN_VERSION
 
-
 SCHEMA_PATH = (
     Path(__file__).resolve().parents[1]
     / "schemas"
@@ -25,7 +24,9 @@ def validate_verification_plan(plan: dict[str, Any]) -> None:
     if errors:
         first = errors[0]
         location = ".".join(str(item) for item in first.absolute_path) or "<root>"
-        raise ValueError(f"verification plan schema validation failed at {location}: {first.message}")
+        raise ValueError(
+            f"verification plan schema validation failed at {location}: {first.message}"
+        )
 
     if plan.get("kind") != PLAN_KIND or plan.get("plan_version") != PLAN_VERSION:
         raise ValueError("verification plan identity mismatch")

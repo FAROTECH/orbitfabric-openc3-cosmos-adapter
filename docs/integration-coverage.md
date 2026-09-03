@@ -1,19 +1,156 @@
 # Integration Coverage
 
-The product will use the established analysis model:
+Integration Coverage describes which OrbitFabric semantics are applicable to the OpenC3 COSMOS Ground integration role, which subset this adapter deliberately claims, and the disposition of each analyzed area.
+
+It is not a count of OpenC3 COSMOS product features and it is not a generic OrbitFabric Core conformance contract.
+
+The maintained row-by-row declaration is stored in the repository at:
+
+```text
+coverage/integration-coverage.md
+```
+
+## Coverage model
 
 ```text
 OrbitFabric Semantic Surface
-    -> Target Applicable Surface
-    -> Adapter Declared Scope
+        -> Target Applicable Surface
+        -> Adapter Declared Scope
 ```
 
-The complete matrix is intentionally deferred until the canonical implementation is concrete enough to support evidence-backed dispositions.
+### OrbitFabric Semantic Surface
 
-Tracking issue:
+The semantics available through the current OrbitFabric contracts and integration surfaces. Core remains authoritative for their meaning.
+
+### Target Applicable Surface
+
+The subset that makes architectural sense for an OpenC3 COSMOS Ground integration.
+
+A semantic area can be valid OrbitFabric meaning and target-applicable while still being deliberately outside the current adapter product.
+
+### Adapter Declared Scope
+
+The subset the current product explicitly promises to implement.
+
+This keeps two questions separate:
 
 ```text
-FAROTECH/OrbitFabric-Architecture-Lab#22
+Scope Completeness
+    how completely does the adapter implement what it promises?
+
+Applicable Surface Coverage
+    how broadly does the release cover the semantics that could make sense for COSMOS?
 ```
 
-Do not widen implementation merely to improve a coverage percentage. A narrow coherent first release is acceptable when scope and non-projected areas are explicit.
+## Dispositions
+
+The matrix uses:
+
+```text
+FULL
+PARTIAL
+NOT_IMPLEMENTED
+TARGET_UNSUPPORTED
+OUT_OF_SCOPE
+NOT_APPLICABLE
+NOT_ANALYZED
+```
+
+`OUT_OF_SCOPE` means a meaningful COSMOS mapping could exist, but the current adapter deliberately does not claim it.
+
+`TARGET_UNSUPPORTED` is reserved for a semantic mismatch demonstrated by analysis rather than unfinished implementation.
+
+## Current `0.1.0.dev0` summary
+
+```text
+Total rows:                         21
+Analyzed rows:                      21
+NOT_ANALYZED:                        0
+Analysis Coverage:                 100%
+
+Known target-applicable rows:       19
+NOT_APPLICABLE:                      2
+
+Declared initial scope:              6
+FULL:                                4
+PARTIAL:                             1
+TARGET_UNSUPPORTED:                  1
+NOT_IMPLEMENTED in declared scope:   0
+
+Known applicable but OUT_OF_SCOPE:  13
+```
+
+The current declared scope therefore has **no known `NOT_IMPLEMENTED` hole**.
+
+The single `PARTIAL` area is Scenario step ordering / `t` semantics. Source order and `t` provenance are preserved, but the adapter deliberately does not convert Scenario time into real waits or scheduling without an explicit target-owned policy.
+
+The `TARGET_UNSUPPORTED` area preserves a deliberate semantic distinction between OrbitFabric host-side command dispatch/status evidence and COSMOS command invocation or downstream acknowledgement. The adapter refuses to manufacture an equivalence that has not been defined.
+
+## Initial product breadth
+
+The current product is intentionally a Scenario verification adapter:
+
+```text
+Core Integration Input Set
+    + OrbitFabric Scenario
+    + OpenC3 COSMOS Projection Profile
+        -> no-argument COSMOS cmd() projection
+        -> telemetry wait_check() projection
+        -> Python procedure / suite artifacts
+        -> Core-conformant Integration Result
+```
+
+It does **not** declare a generic mission-data `project` operation merely for symmetry with another adapter.
+
+Target-applicable areas such as command/telemetry dictionary generation, target/plugin generation, subsystem topology, mode initialization, FDIR behavior, mission policy, command argument encoding, telemetry injection, event expectation and mode expectation remain visible as `OUT_OF_SCOPE`.
+
+## Evidence layers
+
+The current evidence is intentionally separated:
+
+```text
+Canonical adapter CI
+    Core conformance and input integrity
+    projection tests
+    exact COSMOS v7.3.0 source/API compatibility
+    generated Python syntax
+    Adapter Manager installed lifecycle
+    provider-neutral release proof
+
+Historical COSMOS PoC
+    local native v7.3.0 plugin build/load
+    real TCP command and telemetry transport
+    telemetry decommutation
+    Script Runner execution
+    CTRF PASS
+```
+
+Historical PoC evidence supports semantic feasibility but is not silently treated as canonical release evidence.
+
+## Release-readiness implication
+
+Integration Coverage analysis is complete for the current baseline.
+
+One separate target-evidence question remains before freezing the first canonical Ground reference adapter:
+
+```text
+Should the canonical repository carry a reproducible native COSMOS
+runtime acceptance harness/evidence path equivalent in strength to
+what the historical PoC demonstrated locally?
+```
+
+That question should be answered explicitly. It is a target acceptance decision, not a reason to widen the semantic scope.
+
+## Evidence rule
+
+Every non-trivial disposition should remain explainable through one or more of:
+
+```text
+Core contract semantics
+adapter implementation/tests
+target-native compatibility evidence
+explicit ownership boundary
+explicit target limitation
+```
+
+Future versions should widen one semantic family at a time, first defining the target-owned meaning, then adding implementation, negative behavior and downstream-native evidence.

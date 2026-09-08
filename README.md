@@ -4,13 +4,13 @@ Canonical OrbitFabric adapter for projecting selected mission verification inten
 
 OrbitFabric and OpenC3 COSMOS remain independent systems. OrbitFabric Core owns generic mission and integration contracts, this adapter owns COSMOS-specific projection, and COSMOS owns downstream execution semantics and runtime behavior.
 
-> **Release status:** source version `0.1.0` is the stable release-preparation baseline. It is not yet an immutable published `v0.1.0` release. Canonical native COSMOS acceptance previously passed on exact candidate commit `44915686358da7334540d4fa1aca9e204d8a4ac9`; before tagging it must be repeated on the exact accepted stable main commit.
+> **Release status:** `v0.1.0` is published as an immutable GitHub Release from source commit `1e6f477ba0571996fa72dfd0b719a522dcc84ff1`. The release has passed the native OpenC3 COSMOS acceptance, release proof and published-product evidence declared for the first stable line.
 
 ## Choose your path
 
 ### I want to use the adapter
 
-The intended normal consumer lifecycle is through **OrbitFabric Adapter Manager** once the stable release is published.
+Use the published `v0.1.0` release through **OrbitFabric Adapter Manager**.
 
 ```text
 OrbitFabric Core
@@ -63,7 +63,7 @@ Release construction is a separate maintainer and publisher responsibility:
 
 ```text
 accepted stable source commit
-    -> exact v0.1.0 tag
+    -> exact release tag
     -> definitive wheel
     -> adapter-release.json
     -> SHA256SUMS
@@ -215,9 +215,9 @@ The current declared scope therefore contains **no known `NOT_IMPLEMENTED` hole*
 | Relationship Manifest as a direct projection surface | No independent COSMOS relationship-graph artifact | `NOT_APPLICABLE` | Relationship Manifest remains a Core coherence surface rather than a target artifact |
 | Scenario validation and provenance | Core `ScenarioLoader` plus Verification Projection Plan provenance | `FULL` | Scenario semantics are Core-validated and source identity is retained |
 | Scenario step ordering and `t` semantics | Generated Python statement order plus `scenario_t` provenance | `PARTIAL` | Order and `t` are preserved, but `t` is not converted into real waits or wall-clock scheduling |
-| Scenario command action without arguments | Native COSMOS `cmd()` | `FULL` | Profile-resolved command mapping is implemented and native runtime accepted on the candidate baseline |
+| Scenario command action without arguments | Native COSMOS `cmd()` | `FULL` | Profile-resolved command mapping is implemented and native runtime accepted on the published `v0.1.0` baseline |
 | Scenario command arguments | COSMOS command argument encoding | `OUT_OF_SCOPE` | Commands with arguments fail closed until an explicit target encoder exists |
-| Scenario telemetry expectation | Native COSMOS `wait_check()` | `FULL` | Profile-resolved telemetry binding, encoding and timeout are implemented and native runtime accepted on the candidate baseline |
+| Scenario telemetry expectation | Native COSMOS `wait_check()` | `FULL` | Profile-resolved telemetry binding, encoding and timeout are implemented and native runtime accepted on the published `v0.1.0` baseline |
 | Scenario telemetry injection | Target or simulator-specific injection mechanisms | `OUT_OF_SCOPE` | OrbitFabric telemetry mutation is not assumed equivalent to COSMOS injection |
 | Scenario event expectation | COSMOS log/event/telemetry observation | `OUT_OF_SCOPE` | No event observability binding is currently defined |
 | Scenario mode expectation | COSMOS telemetry/state observation | `OUT_OF_SCOPE` | No target mode observation binding is currently defined |
@@ -250,7 +250,7 @@ Changing a pinned downstream baseline is an evidence change, not a documentation
 
 ## Validation model
 
-The stable source baseline is accepted through independent evidence layers:
+The published stable baseline is accepted through independent evidence layers:
 
 ```text
 Core contract conformance
@@ -276,7 +276,7 @@ tools/run_native_cosmos_acceptance.sh
 
 builds the adapter wheel, generates the exact canonical projection, starts pinned COSMOS `v7.3.0`, loads the `OFDEMO` fixture plugin, executes the generated Suite through native Script Runner, retrieves the persisted native report, converts it with OpenC3's CTRF implementation and joins runtime provenance into adapter-owned evidence.
 
-Candidate native evidence on commit `44915686358da7334540d4fa1aca9e204d8a4ac9` proved:
+The accepted `v0.1.0` product evidence proves:
 
 ```text
 STOP_ACQUISITION command received by the external target
@@ -286,7 +286,7 @@ CTRF tests 1 / passed 1 / failed 0
 joined native-runtime-evidence status passed
 ```
 
-The exact stable main source commit must repeat this acceptance before `v0.1.0` tagging. The full runtime harness remains intentionally separate from mandatory GitHub-hosted CI while its external host/container topology remains environment-dependent.
+The release source is `1e6f477ba0571996fa72dfd0b719a522dcc84ff1`. The full runtime harness remains intentionally separate from mandatory GitHub-hosted CI while its external host/container topology remains environment-dependent.
 
 ## Product identity
 

@@ -16,7 +16,7 @@ EXPECTED_PACKAGE = "orbitfabric_openc3_cosmos_adapter"
 EXPECTED_CONSOLE = "orbitfabric-openc3-cosmos"
 EXPECTED_ADAPTER_ID = "orbitfabric-openc3-cosmos"
 EXPECTED_OPERATION = "verification_projection"
-EXPECTED_VERSION = "0.1.0"
+EXPECTED_VERSION = "0.2.0"
 
 
 def _load_json(path: Path) -> dict[str, Any]:

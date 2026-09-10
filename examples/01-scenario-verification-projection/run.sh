@@ -32,6 +32,7 @@ orbitfabric adapter execute "$instance_id" \
 
 test -f "$projection/integration_result.json"
 test -f "$projection/verification_projection/verification_projection_plan.json"
+test -f "$projection/verification_projection/scenario_projection_accounting.json"
 test -f "$projection/verification_projection/cosmos/verification.py"
 test -f "$projection/verification_projection/cosmos/verification_suite.py"
 

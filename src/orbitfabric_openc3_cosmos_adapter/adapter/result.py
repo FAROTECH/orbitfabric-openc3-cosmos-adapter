@@ -105,6 +105,7 @@ def successful_result(
     plan_path: Path,
     procedure_path: Path,
     suite_path: Path,
+    accounting_path: Path,
 ) -> dict[str, Any]:
     mappings = _mapping_records(plan)
     mapping_ids = [record["id"] for record in mappings]
@@ -147,6 +148,14 @@ def successful_result(
         "artifacts": [
             _artifact(
                 output_dir=output_dir,
+                artifact_id="scenario.accounting",
+                kind="orbitfabric.scenario_projection_accounting",
+                path=accounting_path,
+                media_type="application/json",
+                mapping_ids=mapping_ids,
+            ),
+            _artifact(
+                output_dir=output_dir,
                 artifact_id="verification.plan",
                 kind="openc3_cosmos.verification_projection_plan",
                 path=plan_path,
@@ -177,8 +186,9 @@ def successful_result(
             "status": "unavailable",
             "scope": {"domains": []},
             "reason": (
-                "Scenario atom accounting is retained in the target-owned Verification "
-                "Projection Plan; release-level Integration Coverage is analyzed separately."
+                "Generic Scenario atom accounting is retained in the Result-owned "
+                "scenario.accounting artifact; release-level Integration Coverage is "
+                "analyzed separately."
             ),
             "summary": {},
             "records": [],

@@ -51,7 +51,7 @@ This does not add a new OrbitFabric semantic capability and does not widen Integ
 
 ```text
 OrbitFabric Core
-4377d6656c62aa1dc19a7ed81d2de872b6b22ccd
+b4e1185de4931ff125be699dfe09f63ab3746015
 
 OpenC3 COSMOS
 v7.3.0

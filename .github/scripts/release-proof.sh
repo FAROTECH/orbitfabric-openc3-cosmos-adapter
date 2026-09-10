@@ -45,7 +45,7 @@ assert release["source_coordinate"] == {
     "publisher": "orbitfabric",
     "name": "openc3-cosmos",
 }
-assert release["release_version"] == "0.1.0"
+assert release["release_version"] == "0.2.0"
 ProjectLockService().load("$lock")
 PY
 

@@ -154,6 +154,7 @@ assert provenance[0]["role"] == "scenario"
 assert provenance[0]["id"] == "cosmos_verification_smoke"
 assert provenance[0]["sha256"] == hashlib.sha256(scenario.read_bytes()).hexdigest()
 assert [item["id"] for item in result["artifacts"]] == [
+    "scenario.accounting",
     "verification.plan",
     "verification.cosmos_procedure",
     "verification.cosmos_suite",
@@ -161,6 +162,14 @@ assert [item["id"] for item in result["artifacts"]] == [
 assert plan["status"] == "executable_subset"
 assert plan["target"]["baseline"] == "v7.3.0"
 assert plan["accounting"]["resolved_operations"] == 2
+accounting = json.loads(
+    (output / "verification_projection" / "scenario_projection_accounting.json").read_text(
+        encoding="utf-8"
+    )
+)
+assert accounting["kind"] == "orbitfabric.scenario_projection_accounting"
+assert accounting["completeness"] == "complete"
+assert len(accounting["records"]) == 5
 assert (output / "verification_projection" / "cosmos" / "verification.py").is_file()
 assert (output / "verification_projection" / "cosmos" / "verification_suite.py").is_file()
 PY
@@ -169,6 +178,8 @@ cp "$verification_output/integration_result.json" \
   "$evidence/verification-integration-result.json"
 cp "$verification_output/verification_projection/verification_projection_plan.json" \
   "$evidence/verification-projection-plan.json"
+cp "$verification_output/verification_projection/scenario_projection_accounting.json" \
+  "$evidence/scenario-projection-accounting.json"
 
 orbitfabric adapter remove "$INSTANCE_ID" --json | tee "$evidence/remove.json"
 orbitfabric adapter list --json | tee "$evidence/final-inventory.json"

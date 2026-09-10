@@ -6,6 +6,9 @@ OrbitFabric and OpenC3 COSMOS remain independent systems. OrbitFabric Core owns 
 
 > **Release status:** `v0.1.0` is published as an immutable GitHub Release from source commit `1e6f477ba0571996fa72dfd0b719a522dcc84ff1`. The release has passed the native OpenC3 COSMOS acceptance, release proof and published-product evidence declared for the first stable line.
 
+The current source prepares `0.2.0`. It adds the generic Scenario Projection
+Accounting artifact. The published `v0.1.0` release remains immutable.
+
 ## Choose your path
 
 ### I want to use the adapter
@@ -79,7 +82,7 @@ Start with **[Maintainer / Publisher Guide](docs/publishing.md)** and [Release R
 
 ## What the adapter does
 
-The `0.1.0` product baseline:
+The product baseline:
 
 - consumes a coherent OrbitFabric Core Integration Input Set;
 - validates an OpenC3 COSMOS-specific Projection Profile;
@@ -90,6 +93,8 @@ The `0.1.0` product baseline:
 - maps supported telemetry expectations to native COSMOS `wait_check()` calls;
 - materializes a native COSMOS Python procedure and Suite;
 - emits a Core-conformant Integration Result with provenance and coverage;
+- emits complete generic Scenario Projection Accounting from adapter-owned
+  projection knowledge;
 - fails explicitly when a requested semantic mapping is unsupported or outside the declared contract.
 
 The adapter deliberately does **not** declare a generic mission-data `project` operation merely for symmetry with other adapters. Broader Ground integration surfaces should be added only when target-owned semantics and evidence justify them.
@@ -155,12 +160,19 @@ Representative outputs:
 
 ```text
 verification_projection/verification_projection_plan.json
+verification_projection/scenario_projection_accounting.json
 verification_projection/cosmos/verification.py
 verification_projection/cosmos/verification_suite.py
 integration_result.json
 ```
 
 The generated COSMOS files are downstream artifacts. The Integration Result remains the primary OrbitFabric execution evidence surface.
+
+The Result also owns a generic
+`orbitfabric.scenario_projection_accounting` `0.1-candidate` sidecar. It
+publishes the adapter's complete disposition for every exact consumed Scenario
+atom. Consumers do not need to parse the COSMOS-specific Verification
+Projection Plan.
 
 ## Integration Coverage
 
@@ -242,7 +254,7 @@ The detailed maintainer declaration, rationale and roadmap for every row remain 
 
 | System | Validated baseline |
 | --- | --- |
-| OrbitFabric Core | `4377d6656c62aa1dc19a7ed81d2de872b6b22ccd` |
+| OrbitFabric Core | `b4e1185de4931ff125be699dfe09f63ab3746015` |
 | OpenC3 COSMOS | `v7.3.0` |
 | `cosmos-project` | `9eb454f06fe0113d05aa6945d88b627155a2aa47` |
 

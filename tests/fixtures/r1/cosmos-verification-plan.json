@@ -1,0 +1,218 @@
+{
+  "accounting": {
+    "blocked_atoms": 0,
+    "not_projected_atoms": 5,
+    "projected_atoms": 3,
+    "projected_source_actions": 1,
+    "projected_source_expectations": 1,
+    "resolved_operations": 2,
+    "source_actions": 1,
+    "source_atoms": 8,
+    "source_expectations": 4
+  },
+  "atoms": [
+    {
+      "binding_id": null,
+      "disposition": "projected",
+      "id": "atom-0001",
+      "kind": "scenario_metadata",
+      "operation_ids": [],
+      "reason": null,
+      "role": "metadata",
+      "scenario_t": null,
+      "source": null,
+      "source_value": {
+        "description": "Verify the mission-level stop-acquisition contract from an already active payload state. The command completes the acquisition, reports the payload inactive, and returns the payload lifecycle to READY without asserting a post-recovery spacecraft mode.\n",
+        "id": "payload_stop_acquisition_verification",
+        "name": "Payload stop acquisition verification"
+      },
+      "step_index": null
+    },
+    {
+      "binding_id": null,
+      "disposition": "not_projected",
+      "id": "atom-0002",
+      "kind": "initial_mode",
+      "operation_ids": [],
+      "reason": "Initial mode is Core host-side Scenario state; no COSMOS initialization or observation policy is defined in the initial adapter scope.",
+      "role": "initial_state",
+      "scenario_t": null,
+      "source": {
+        "domain": "modes",
+        "id": "PAYLOAD_ACTIVE"
+      },
+      "source_value": "PAYLOAD_ACTIVE",
+      "step_index": null
+    },
+    {
+      "binding_id": null,
+      "disposition": "not_projected",
+      "id": "atom-0003",
+      "kind": "initial_telemetry",
+      "operation_ids": [],
+      "reason": "Initial telemetry is Core host-side Scenario state; the initial adapter scope does not project target initialization.",
+      "role": "initial_state",
+      "scenario_t": null,
+      "source": {
+        "domain": "telemetry",
+        "id": "radiation_payload.acquisition_active"
+      },
+      "source_value": true,
+      "step_index": null
+    },
+    {
+      "binding_id": "cmd.stop_acquisition",
+      "disposition": "projected",
+      "id": "atom-0004",
+      "kind": "command",
+      "operation_ids": [
+        "op-0001"
+      ],
+      "reason": null,
+      "role": "action",
+      "scenario_t": 1,
+      "source": {
+        "domain": "commands",
+        "id": "payload.stop_acquisition"
+      },
+      "source_value": {
+        "args": {}
+      },
+      "step_index": 0
+    },
+    {
+      "binding_id": null,
+      "disposition": "not_projected",
+      "id": "atom-0005",
+      "kind": "expect_event",
+      "operation_ids": [],
+      "reason": "No explicit Core event to OpenC3 COSMOS observation binding is defined in the initial adapter scope.",
+      "role": "expectation",
+      "scenario_t": 2,
+      "source": {
+        "domain": "events",
+        "id": "payload.acquisition_completed"
+      },
+      "source_value": true,
+      "step_index": 1
+    },
+    {
+      "binding_id": "tm.acquisition_active",
+      "disposition": "projected",
+      "id": "atom-0006",
+      "kind": "expect_telemetry",
+      "operation_ids": [
+        "op-0002"
+      ],
+      "reason": null,
+      "role": "expectation",
+      "scenario_t": 3,
+      "source": {
+        "domain": "telemetry",
+        "id": "radiation_payload.acquisition_active"
+      },
+      "source_value": false,
+      "step_index": 2
+    },
+    {
+      "binding_id": null,
+      "disposition": "not_projected",
+      "id": "atom-0007",
+      "kind": "expect_payload_lifecycle",
+      "operation_ids": [],
+      "reason": "No explicit payload lifecycle observability contract is defined for OpenC3 COSMOS.",
+      "role": "expectation",
+      "scenario_t": 4,
+      "source": {
+        "domain": "payloads",
+        "id": "radiation_event_payload"
+      },
+      "source_value": {
+        "payload": "radiation_event_payload",
+        "state": "READY"
+      },
+      "step_index": 3
+    },
+    {
+      "binding_id": null,
+      "disposition": "not_projected",
+      "id": "atom-0008",
+      "kind": "expect_scenario_status",
+      "operation_ids": [],
+      "reason": "OrbitFabric scenario_status is aggregate Core host-side state, not a target runtime observation.",
+      "role": "expectation",
+      "scenario_t": 5,
+      "source": null,
+      "source_value": "PASSED",
+      "step_index": 4
+    }
+  ],
+  "core_input": {
+    "input_set_sha256": "4bbdca769e4b8fdee51719a47acaa49e9a552b4360f96d8664947514b074ef34",
+    "input_set_version": "0.1-candidate",
+    "kind": "orbitfabric.integration_input_set",
+    "mission_id": "of-rm-1",
+    "model_version": "0.1.0-reference-skeleton"
+  },
+  "diagnostics": [],
+  "integration": {
+    "adapter_version": "0.1.0",
+    "id": "orbitfabric-openc3-cosmos",
+    "schema_version": "0.1-candidate"
+  },
+  "kind": "orbitfabric.openc3_cosmos.verification_projection_plan",
+  "operations": [
+    {
+      "binding_id": "cmd.stop_acquisition",
+      "id": "op-0001",
+      "operation": "send_command",
+      "order": 0,
+      "origin": "profile_mapping",
+      "resolved": {
+        "arguments": {},
+        "command": "Ref.payload.OF_StopAcquisition",
+        "target": "FPRIME"
+      },
+      "source_atom_id": "atom-0004"
+    },
+    {
+      "binding_id": "tm.acquisition_active",
+      "id": "op-0002",
+      "operation": "wait_telemetry",
+      "order": 1,
+      "origin": "scenario_expectation_plus_profile_observation_policy",
+      "resolved": {
+        "expected_value": 0,
+        "item": "OF_AcquisitionActive",
+        "operator": "==",
+        "packet": "Ref.payload.OF_AcquisitionActive",
+        "source_expected_value": false,
+        "target": "FPRIME",
+        "timeout_s": 5.0,
+        "value_encoding": "boolean_01"
+      },
+      "source_atom_id": "atom-0006"
+    }
+  ],
+  "plan_version": "0.1-candidate",
+  "profile": {
+    "id": "engineering-story-flight-ground-cosmos",
+    "kind": "orbitfabric.projection_profile",
+    "profile_version": "0.1-candidate",
+    "sha256": "3ac68f9bace16775812a9b3bbe17650c9e26a9e09e4d50b49f99b31322c08b41",
+    "version": "0.1.0"
+  },
+  "source": {
+    "orbitfabric_version": "1.3.0",
+    "scenario_description": "Verify the mission-level stop-acquisition contract from an already active payload state. The command completes the acquisition, reports the payload inactive, and returns the payload lifecycle to READY without asserting a post-recovery spacecraft mode.\n",
+    "scenario_id": "payload_stop_acquisition_verification",
+    "scenario_name": "Payload stop acquisition verification",
+    "scenario_sha256": "b19ff6e1cf3c45cdb81e239d30aad97e8b6f037703c06f27102b762e69a1146a"
+  },
+  "status": "executable_subset",
+  "target": {
+    "baseline": "v7.3.0",
+    "ecosystem": "OpenC3 COSMOS",
+    "target_name": "FPRIME"
+  }
+}

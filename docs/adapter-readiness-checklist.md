@@ -7,7 +7,8 @@ This checklist separates stable source acceptance from immutable publication.
 - [x] repository / distribution / package identity fixed;
 - [x] adapter and integration ids fixed;
 - [x] declared initial operation surface fixed;
-- [x] source version set to `0.1.0`;
+- [x] first stable release version set to `0.1.0`;
+- [x] current Scenario accounting source version set to `0.2.0`;
 - [x] logical key set to `orbitfabric/openc3-cosmos`;
 - [x] Source Coordinate frozen as `github.com/FAROTECH:orbitfabric/openc3-cosmos`.
 

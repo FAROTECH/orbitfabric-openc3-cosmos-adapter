@@ -2,7 +2,8 @@
 
 Release construction is a maintainer responsibility and is separate from normal adapter consumption.
 
-The source version is `0.1.0`. An immutable `v0.1.0` release is not yet claimed.
+The source version is `0.2.0`. The immutable `v0.1.0` release remains
+published; `v0.2.0` is not claimed until its release gates pass.
 
 ## Release ownership
 
@@ -27,7 +28,7 @@ From the exact accepted stable source commit:
 python -m build --wheel
 
 python tools/build_release_bundle.py \
-  --wheel dist/orbitfabric_openc3_cosmos_adapter-0.1.0-py3-none-any.whl \
+  --wheel dist/orbitfabric_openc3_cosmos_adapter-0.2.0-py3-none-any.whl \
   --authority github.com/FAROTECH \
   --publisher orbitfabric \
   --name openc3-cosmos \

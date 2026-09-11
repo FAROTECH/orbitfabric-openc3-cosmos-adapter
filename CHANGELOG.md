@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.2.0
+
+- Emit the generic Result-owned Scenario Projection Accounting
+  `0.1-candidate` artifact from existing adapter projection knowledge.
+- Preserve complete exact-atom disposition, reasons and parent-local mapping
+  associations.
+- Keep COSMOS-specific projection plan and native artifacts unchanged.
+
 ## 0.1.0 - Unreleased
 
 ### Added

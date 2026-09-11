@@ -4,7 +4,8 @@ This page describes the **consumer** path.
 
 The normal OrbitFabric user installs a released adapter through Adapter Manager and executes it through Core. Editable source installs and the direct adapter CLI belong to the contributor workflow documented in [Development](development.md).
 
-> The source is prepared as version `0.1.0`, but `v0.1.0` publication is not yet claimed. Until the immutable release exists, the commands below describe the managed lifecycle already proven by CI and the path that published release assets will expose.
+> `v0.1.0` is the current immutable release. The repository source prepares
+> `0.2.0` and must complete its release acceptance before publication.
 
 ## 1. Install OrbitFabric Core
 
@@ -13,7 +14,7 @@ Install a compatible OrbitFabric Core environment first.
 The current adapter baseline is validated against exact Core commit:
 
 ```text
-4377d6656c62aa1dc19a7ed81d2de872b6b22ccd
+b4e1185de4931ff125be699dfe09f63ab3746015
 ```
 
 ## 2. Obtain adapter release assets

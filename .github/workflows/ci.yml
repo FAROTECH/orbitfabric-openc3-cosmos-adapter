@@ -24,7 +24,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: FAROTECH/orbitfabric
-          ref: 4377d6656c62aa1dc19a7ed81d2de872b6b22ccd
+          ref: b4e1185de4931ff125be699dfe09f63ab3746015
           path: _orbitfabric_core
 
       - uses: actions/setup-python@v5
@@ -82,7 +82,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: FAROTECH/orbitfabric
-          ref: 4377d6656c62aa1dc19a7ed81d2de872b6b22ccd
+          ref: b4e1185de4931ff125be699dfe09f63ab3746015
           path: _orbitfabric_core
 
       - name: Checkout validated OpenC3 COSMOS target baseline
@@ -126,7 +126,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: FAROTECH/orbitfabric
-          ref: 4377d6656c62aa1dc19a7ed81d2de872b6b22ccd
+          ref: b4e1185de4931ff125be699dfe09f63ab3746015
           path: _orbitfabric_core
 
       - uses: actions/setup-python@v5
@@ -162,7 +162,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: FAROTECH/orbitfabric
-          ref: 4377d6656c62aa1dc19a7ed81d2de872b6b22ccd
+          ref: b4e1185de4931ff125be699dfe09f63ab3746015
           path: _orbitfabric_core
 
       - uses: actions/setup-python@v5
@@ -198,7 +198,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: FAROTECH/orbitfabric
-          ref: 4377d6656c62aa1dc19a7ed81d2de872b6b22ccd
+          ref: b4e1185de4931ff125be699dfe09f63ab3746015
           path: _orbitfabric_core
 
       - uses: actions/setup-python@v5

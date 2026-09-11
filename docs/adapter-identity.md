@@ -13,6 +13,10 @@ logical key      orbitfabric/openc3-cosmos
 version          0.1.0
 ```
 
+The current development source uses adapter version `0.2.0` for the new
+Result-producing behavior. It does not alter the identity of the published
+`v0.1.0` release.
+
 ## Stable Source Coordinate
 
 The first stable release freezes:

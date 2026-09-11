@@ -48,4 +48,6 @@ Start here when accepting source, constructing release artifacts or retaining ev
 - [Evidence and Traceability](evidence-and-traceability.md)
 - [Adapter Identity](adapter-identity.md)
 
-The source version is `0.1.0`. Stable source preparation does not imply that the immutable `v0.1.0` publication has already occurred.
+The current source prepares `0.2.0` with generic Scenario Projection
+Accounting. The immutable `v0.1.0` release remains the published baseline
+until a new release completes its own acceptance.

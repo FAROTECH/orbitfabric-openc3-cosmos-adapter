@@ -8,6 +8,7 @@ from pathlib import Path
 from .cosmos_materializer import materialize_python_procedure, materialize_python_suite
 from .io import write_json
 from .result import failed_result, successful_result, unavailable_operation_input, write_result
+from .scenario_accounting import write_scenario_projection_accounting
 from .verification_plan import validate_verification_plan
 from .verification_projector import project_verification_scenario
 
@@ -143,6 +144,10 @@ def main(argv: list[str] | None = None) -> int:
             plan,
             bundle / "cosmos" / "verification_suite.py",
         )
+        accounting_path = write_scenario_projection_accounting(
+            plan,
+            bundle / "scenario_projection_accounting.json",
+        )
 
         result = successful_result(
             operation=operation,
@@ -151,6 +156,7 @@ def main(argv: list[str] | None = None) -> int:
             plan_path=plan_path,
             procedure_path=procedure_path,
             suite_path=suite_path,
+            accounting_path=accounting_path,
         )
         result_path = write_result(output_dir, result)
     except (ValueError, OSError) as exc:

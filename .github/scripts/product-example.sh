@@ -95,6 +95,17 @@ assert result["mission"]["id"] == "demo-3u"
 assert plan["status"] == "executable_subset"
 assert plan["target"]["baseline"] == "v7.3.0"
 assert plan["accounting"]["resolved_operations"] == 2
+accounting = json.loads(
+    (
+        output
+        / "projection"
+        / "verification_projection"
+        / "scenario_projection_accounting.json"
+    ).read_text(encoding="utf-8")
+)
+assert accounting["kind"] == "orbitfabric.scenario_projection_accounting"
+assert accounting["completeness"] == "complete"
+assert len(accounting["records"]) == 5
 PY
 
 cp "$output/verify.json" "$evidence/verify.json"
@@ -102,6 +113,8 @@ cp "$output/execution.json" "$evidence/execution.json"
 cp "$output/projection/integration_result.json" "$evidence/integration-result.json"
 cp "$output/projection/verification_projection/verification_projection_plan.json" \
   "$evidence/verification-projection-plan.json"
+cp "$output/projection/verification_projection/scenario_projection_accounting.json" \
+  "$evidence/scenario-projection-accounting.json"
 
 orbitfabric adapter remove "$INSTANCE_ID" --json | tee "$evidence/remove.json"
 orbitfabric adapter list --json | tee "$evidence/final-inventory.json"

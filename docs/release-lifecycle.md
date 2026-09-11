@@ -13,7 +13,7 @@ publication provider
     transport and distribution
 ```
 
-Source version `0.1.0` does not imply that immutable publication has already occurred.
+Source version `0.2.0` does not imply immutable `v0.2.0` publication.
 
 ## Current readiness state
 
@@ -22,7 +22,7 @@ The declared initial semantic scope is functionally complete, the consumer produ
 The release-preparation source now freezes:
 
 ```text
-version:          0.1.0
+version:          0.2.0
 logical key:      orbitfabric/openc3-cosmos
 source authority: github.com/FAROTECH
 publisher:        orbitfabric

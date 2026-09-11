@@ -62,6 +62,7 @@ core-input/
 
 projection/integration_result.json
 projection/verification_projection/verification_projection_plan.json
+projection/verification_projection/scenario_projection_accounting.json
 projection/verification_projection/cosmos/verification.py
 projection/verification_projection/cosmos/verification_suite.py
 verify.json

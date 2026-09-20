@@ -6,6 +6,10 @@ on:
     branches:
       - main
 
+env:
+  ORBITFABRIC_CORE_REPOSITORY: FAROTECH/orbitfabric
+  ORBITFABRIC_CORE_REF: b4e1185de4931ff125be699dfe09f63ab3746015
+
 jobs:
   checks:
     strategy:
@@ -23,8 +27,8 @@ jobs:
       - name: Checkout exact OrbitFabric Core baseline
         uses: actions/checkout@v4
         with:
-          repository: FAROTECH/orbitfabric
-          ref: b4e1185de4931ff125be699dfe09f63ab3746015
+          repository: ${{ env.ORBITFABRIC_CORE_REPOSITORY }}
+          ref: ${{ env.ORBITFABRIC_CORE_REF }}
           path: _orbitfabric_core
 
       - uses: actions/setup-python@v5
@@ -67,6 +71,17 @@ jobs:
               raise SystemExit("Missing wheel assets: " + ", ".join(missing))
           PY
 
+      - name: Set repository-aware documentation coordinates
+        shell: bash
+        run: |
+          owner="$(printf '%s' "$GITHUB_REPOSITORY_OWNER" | tr '[:upper:]' '[:lower:]')"
+          repo="${GITHUB_REPOSITORY#*/}"
+          {
+            echo "ORBITFABRIC_SITE_URL=https://${owner}.github.io/${repo}/"
+            echo "ORBITFABRIC_REPO_URL=https://github.com/${GITHUB_REPOSITORY}"
+            echo "ORBITFABRIC_REPO_NAME=${GITHUB_REPOSITORY}"
+          } >> "$GITHUB_ENV"
+
       - name: Build documentation
         run: mkdocs build --strict
 
@@ -81,8 +96,8 @@ jobs:
       - name: Checkout exact OrbitFabric Core baseline
         uses: actions/checkout@v4
         with:
-          repository: FAROTECH/orbitfabric
-          ref: b4e1185de4931ff125be699dfe09f63ab3746015
+          repository: ${{ env.ORBITFABRIC_CORE_REPOSITORY }}
+          ref: ${{ env.ORBITFABRIC_CORE_REF }}
           path: _orbitfabric_core
 
       - name: Checkout validated OpenC3 COSMOS target baseline
@@ -125,8 +140,8 @@ jobs:
       - name: Checkout exact OrbitFabric Core baseline
         uses: actions/checkout@v4
         with:
-          repository: FAROTECH/orbitfabric
-          ref: b4e1185de4931ff125be699dfe09f63ab3746015
+          repository: ${{ env.ORBITFABRIC_CORE_REPOSITORY }}
+          ref: ${{ env.ORBITFABRIC_CORE_REF }}
           path: _orbitfabric_core
 
       - uses: actions/setup-python@v5
@@ -161,8 +176,8 @@ jobs:
       - name: Checkout exact OrbitFabric Core baseline
         uses: actions/checkout@v4
         with:
-          repository: FAROTECH/orbitfabric
-          ref: b4e1185de4931ff125be699dfe09f63ab3746015
+          repository: ${{ env.ORBITFABRIC_CORE_REPOSITORY }}
+          ref: ${{ env.ORBITFABRIC_CORE_REF }}
           path: _orbitfabric_core
 
       - uses: actions/setup-python@v5
@@ -197,8 +212,8 @@ jobs:
       - name: Checkout exact OrbitFabric Core baseline
         uses: actions/checkout@v4
         with:
-          repository: FAROTECH/orbitfabric
-          ref: b4e1185de4931ff125be699dfe09f63ab3746015
+          repository: ${{ env.ORBITFABRIC_CORE_REPOSITORY }}
+          ref: ${{ env.ORBITFABRIC_CORE_REF }}
           path: _orbitfabric_core
 
       - uses: actions/setup-python@v5

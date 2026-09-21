@@ -89,8 +89,10 @@ def serve_telemetry(state: SimulatorState, host: str, port: int) -> None:
             emit("telemetry_client_connected", peer=list(address))
             state.attach_telemetry(client)
             try:
-                while not state.stop.wait(0.25):
-                    pass
+                while not state.stop.is_set():
+                    state.publish_status()
+                    if state.stop.wait(0.25):
+                        break
             finally:
                 state.detach_telemetry(client)
                 client.close()

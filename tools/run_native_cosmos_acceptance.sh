@@ -155,6 +155,58 @@ end
   )
 }
 
+cosmos_wait_for_tlm() {
+  local compose_args=(
+    docker compose
+    --project-directory "${COSMOS_PROJECT_DIR}"
+    --env-file "${COSMOS_PROJECT_DIR}/.env"
+  )
+  if [[ -f "${COSMOS_PROJECT_DIR}/.env.local" ]]; then
+    compose_args+=(--env-file "${COSMOS_PROJECT_DIR}/.env.local")
+  fi
+  compose_args+=(-f "${COSMOS_PROJECT_DIR}/compose.yaml")
+  if [[ -f "${COSMOS_PROJECT_DIR}/compose.override.yaml" ]]; then
+    compose_args+=(-f "${COSMOS_PROJECT_DIR}/compose.override.yaml")
+  fi
+
+  (
+    cd "${COSMOS_PROJECT_DIR}"
+    "${compose_args[@]}" run -T --rm \
+      -e OPENC3_API_PASSWORD="${OPENC3_API_PASSWORD}" \
+      --no-deps \
+      openc3-cosmos-cmd-tlm-api \
+      ruby -ropenc3 -ropenc3/api/api -e '
+class OrbitFabricReadinessApi
+  include OpenC3::Api
+end
+
+api = OrbitFabricReadinessApi.new
+deadline = Time.now + 30
+
+loop do
+  value = api.tlm(
+    "OFDEMO",
+    "STATUS",
+    "ACQUISITION_ACTIVE",
+    scope: "DEFAULT"
+  )
+
+  unless value.nil?
+    puts value.inspect
+    exit 0
+  end
+
+  if Time.now >= deadline
+    warn "OFDEMO STATUS telemetry did not become readable"
+    exit 1
+  end
+
+  sleep 0.25
+end
+'
+  )
+}
+
 require_command git
 require_command docker
 require_command curl
@@ -368,6 +420,13 @@ if ! wait_for_log_event "${EVIDENCE_DIR}/simulator.jsonl" command_client_connect
 fi
 if ! wait_for_log_event "${EVIDENCE_DIR}/simulator.jsonl" telemetry_client_connected 60; then
   echo "COSMOS telemetry interface did not connect to OFDEMO simulator" >&2
+  exit 1
+fi
+
+log "waiting for COSMOS telemetry readiness"
+if ! cosmos_wait_for_tlm >"${EVIDENCE_DIR}/telemetry-readiness.log" 2>&1; then
+  cat "${EVIDENCE_DIR}/telemetry-readiness.log" >&2 || true
+  echo "COSMOS telemetry did not become readable" >&2
   exit 1
 fi
 

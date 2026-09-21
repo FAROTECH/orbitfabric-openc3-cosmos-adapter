@@ -8,7 +8,7 @@
   associations.
 - Keep COSMOS-specific projection plan and native artifacts unchanged.
 
-## 0.1.0 - Unreleased
+## 0.1.0 - 2026-09-03
 
 ### Added
 

@@ -6,8 +6,7 @@ OrbitFabric and OpenC3 COSMOS remain independent systems. OrbitFabric Core owns 
 
 > **Release status:** `v0.1.0` is published as an immutable GitHub Release from source commit `1e6f477ba0571996fa72dfd0b719a522dcc84ff1`. The release has passed the native OpenC3 COSMOS acceptance, release proof and published-product evidence declared for the first stable line.
 
-The current source prepares `0.2.0`. It adds the generic Scenario Projection
-Accounting artifact. The published `v0.1.0` release remains immutable.
+The current source is the `0.2.0` release-preparation line. It adds the generic Scenario Projection\nAccounting artifact. The published `v0.1.0` release remains immutable under its historical\nFAROTECH Source Coordinate; `v0.2.0` will use the OrbitFabric Organization authority after\nits release gates pass.
 
 ## Choose your path
 
@@ -190,7 +189,7 @@ OrbitFabric Semantic Surface
         -> Adapter Declared Scope
 ```
 
-Current `0.1.0` summary:
+Declared-scope summary (unchanged from `v0.1.0`):
 
 ```text
 Analyzed semantic areas:              21 / 21
@@ -310,7 +309,7 @@ console command  orbitfabric-openc3-cosmos
 adapter.id       orbitfabric-openc3-cosmos
 integration.id   orbitfabric-openc3-cosmos
 logical key      orbitfabric/openc3-cosmos
-version          0.1.0
+version          0.2.0
 ```
 
 ## Repository structure

@@ -1,6 +1,6 @@
 # Release Lifecycle
 
-The adapter follows the same product boundary proven by the first canonical OpenOBSW/OpenSVF adapter:
+The adapter follows the same product boundary proven by the canonical public OrbitFabric adapters:
 
 ```text
 Adapter Release Descriptor
@@ -13,40 +13,56 @@ publication provider
     transport and distribution
 ```
 
-Source version `0.2.0` does not imply immutable `v0.2.0` publication.
+Source version `0.2.0` does not by itself imply immutable `v0.2.0` publication.
 
-## Current readiness state
+## Release lineage
 
-The declared initial semantic scope is functionally complete, the consumer product surface is CI-backed, and canonical native COSMOS acceptance has passed on a candidate source commit.
-
-The release-preparation source now freezes:
+Historical published release:
 
 ```text
-version:          0.2.0
+version:          0.1.0
 logical key:      orbitfabric/openc3-cosmos
 source authority: github.com/FAROTECH
 publisher:        orbitfabric
 name:             openc3-cosmos
+status:           published / immutable
 ```
+
+Current release-preparation source:
+
+```text
+version:          0.2.0
+logical key:      orbitfabric/openc3-cosmos
+source authority: github.com/OrbitFabric
+publisher:        orbitfabric
+name:             openc3-cosmos
+status:           pre-tag / acceptance pending
+```
+
+The logical key is continuous across the ownership migration. Historical Source Coordinate identity is not rewritten.
+
+## Current readiness state
+
+The 0.2.0 source adds generic Scenario Projection Accounting while preserving COSMOS-specific projection behavior and target baselines.
 
 The remaining pre-tag gate is exact-source acceptance:
 
 ```text
-merge the release-preparation source
+merge release-preparation source
     -> permanent CI green on exact main commit
     -> native COSMOS acceptance PASS on that exact commit
     -> retain source / wheel / target provenance
 ```
 
-Only then is the source eligible for the `v0.1.0` tag.
+Only then is the source eligible for the `v0.2.0` tag.
 
 ## Stable release membership
 
-The publisher release membership is:
+The publisher release membership for v0.2.0 is:
 
 ```text
-v0.1.0 tag
-orbitfabric_openc3_cosmos_adapter-0.1.0-py3-none-any.whl
+v0.2.0 tag
+orbitfabric_openc3_cosmos_adapter-0.2.0-py3-none-any.whl
 adapter-release.json
 SHA256SUMS
 release notes
@@ -62,6 +78,9 @@ Hosted CI proves source checks, contract behavior, managed lifecycle, product-ex
 
 ## Publication state
 
-No immutable `v0.1.0` release is currently claimed.
+```text
+v0.1.0  published / immutable / historical FAROTECH Source Coordinate
+v0.2.0  release preparation / OrbitFabric Source Coordinate / not yet tagged
+```
 
 See [Release Readiness Checklist](adapter-readiness-checklist.md) and [Maintainer / Publisher Guide](publishing.md).

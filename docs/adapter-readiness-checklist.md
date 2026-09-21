@@ -6,18 +6,20 @@ This checklist separates stable source acceptance from immutable publication.
 
 - [x] repository / distribution / package identity fixed;
 - [x] adapter and integration ids fixed;
-- [x] declared initial operation surface fixed;
-- [x] first stable release version set to `0.1.0`;
-- [x] current Scenario accounting source version set to `0.2.0`;
+- [x] declared operation surface fixed;
+- [x] historical stable release `v0.1.0` preserved;
+- [x] current release-preparation version set to `0.2.0`;
 - [x] logical key set to `orbitfabric/openc3-cosmos`;
-- [x] Source Coordinate frozen as `github.com/FAROTECH:orbitfabric/openc3-cosmos`.
+- [x] historical `v0.1.0` Source Coordinate preserved as `github.com/FAROTECH:orbitfabric/openc3-cosmos`;
+- [x] `v0.2.0` Source Coordinate set to `github.com/OrbitFabric:orbitfabric/openc3-cosmos`.
 
 ## B. Product scope
 
 - [x] 21 / 21 semantic areas analyzed;
-- [x] no `NOT_IMPLEMENTED` gap inside declared initial scope;
+- [x] no `NOT_IMPLEMENTED` gap inside declared scope;
 - [x] `PARTIAL` and `TARGET_UNSUPPORTED` dispositions documented;
-- [x] out-of-scope semantic breadth explicitly preserved as non-blocking.
+- [x] out-of-scope semantic breadth explicitly preserved as non-blocking;
+- [x] generic Scenario Projection Accounting added without widening COSMOS-specific projection semantics.
 
 ## C. Product surface
 
@@ -63,15 +65,16 @@ A previous candidate PASS is supporting evidence but does not satisfy this exact
 
 Only after sections D and E are complete:
 
-- [ ] create exact `v0.1.0` tag on the accepted stable commit;
-- [ ] build definitive `orbitfabric_openc3_cosmos_adapter-0.1.0-py3-none-any.whl`;
-- [ ] build release-only `adapter-release.json` with the frozen Source Coordinate;
+- [ ] create exact `v0.2.0` tag on the accepted stable commit;
+- [ ] build definitive `orbitfabric_openc3_cosmos_adapter-0.2.0-py3-none-any.whl`;
+- [ ] build release-only `adapter-release.json` with Source Coordinate `github.com/OrbitFabric:orbitfabric/openc3-cosmos`;
 - [ ] build `SHA256SUMS`;
 - [ ] verify descriptor and digests locally.
 
 ## G. Publication and external acceptance
 
-- [ ] decide and prepare repository visibility / publication provider;
+- [x] repository is public under the OrbitFabric GitHub Organization;
+- [ ] verify immutable-release policy is available before publication;
 - [ ] create verified draft release;
 - [ ] attach only definitive publisher release membership;
 - [ ] verify uploaded/downloaded asset digests;
@@ -81,5 +84,3 @@ Only after sections D and E are complete:
 - [ ] run the consumer product example from the published adapter;
 - [ ] repeat native acceptance as required by the release claim;
 - [ ] retain final Architecture Lab publication evidence.
-
-The repository is currently private. Public greenfield acceptance requires an explicit visibility decision before publication.

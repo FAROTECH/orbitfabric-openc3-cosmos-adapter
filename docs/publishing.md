@@ -3,7 +3,8 @@
 Release construction is a maintainer responsibility and is separate from normal adapter consumption.
 
 The source version is `0.2.0`. The immutable `v0.1.0` release remains
-published; `v0.2.0` is not claimed until its release gates pass.
+published under its historical Source Coordinate. The next release is `v0.2.0`
+and must complete all release gates before publication.
 
 ## Release ownership
 
@@ -29,27 +30,29 @@ python -m build --wheel
 
 python tools/build_release_bundle.py \
   --wheel dist/orbitfabric_openc3_cosmos_adapter-0.2.0-py3-none-any.whl \
-  --authority github.com/FAROTECH \
+  --authority github.com/OrbitFabric \
   --publisher orbitfabric \
   --name openc3-cosmos \
   --release-only
 ```
 
-Publisher release material is:
+Publisher release material is exactly:
 
 ```text
-orbitfabric_openc3_cosmos_adapter-0.1.0-py3-none-any.whl
+orbitfabric_openc3_cosmos_adapter-0.2.0-py3-none-any.whl
 adapter-release.json
 SHA256SUMS
 ```
 
 The default tool mode additionally builds an Adapter Project Lock for lifecycle proof. That lock is consumer selection evidence and is not publisher release membership.
 
-## Stable Source Coordinate
+## Source Coordinate lineage
 
-The first stable release freezes:
+The historical first stable release remains:
 
 ```text
+v0.1.0
+
 authority = github.com/FAROTECH
 publisher = orbitfabric
 name      = openc3-cosmos
@@ -61,7 +64,23 @@ Rendered:
 github.com/FAROTECH:orbitfabric/openc3-cosmos
 ```
 
-This identity is now part of the first-release preparation and must not drift between source acceptance, tag creation and definitive release construction.
+The first post-migration release shall use:
+
+```text
+v0.2.0
+
+authority = github.com/OrbitFabric
+publisher = orbitfabric
+name      = openc3-cosmos
+```
+
+Rendered:
+
+```text
+github.com/OrbitFabric:orbitfabric/openc3-cosmos
+```
+
+The logical key remains `orbitfabric/openc3-cosmos`. Historical release identity is not rewritten when repository ownership changes.
 
 ## Required source gates
 
@@ -88,7 +107,7 @@ After exact stable source acceptance:
 
 ```text
 accepted stable main commit
-    -> exact v0.1.0 tag
+    -> exact v0.2.0 tag
     -> definitive wheel
     -> adapter-release.json
     -> SHA256SUMS
@@ -101,7 +120,7 @@ accepted stable main commit
     -> final Architecture Lab publication evidence
 ```
 
-The repository is currently private. If `v0.1.0` follows the public OpenOBSW/OpenSVF publication model, repository visibility must be changed before the public publication and greenfield phase.
+The repository is public and now lives under the OrbitFabric GitHub Organization.
 
 ## No source provenance shortcuts
 

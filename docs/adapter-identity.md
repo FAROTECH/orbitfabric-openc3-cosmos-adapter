@@ -1,6 +1,6 @@
 # Adapter Identity
 
-The first stable source identity is:
+The current source identity is:
 
 ```text
 repository       orbitfabric-openc3-cosmos-adapter
@@ -10,29 +10,43 @@ console command  orbitfabric-openc3-cosmos
 adapter.id       orbitfabric-openc3-cosmos
 integration.id   orbitfabric-openc3-cosmos
 logical key      orbitfabric/openc3-cosmos
-version          0.1.0
+version          0.2.0
 ```
 
-The current development source uses adapter version `0.2.0` for the new
-Result-producing behavior. It does not alter the identity of the published
-`v0.1.0` release.
+The logical adapter key is unchanged by the GitHub ownership migration.
 
-## Stable Source Coordinate
+## Release Source Coordinate lineage
 
-The first stable release freezes:
+Historical first stable release:
 
 ```text
+v0.1.0
 authority = github.com/FAROTECH
 publisher = orbitfabric
 name      = openc3-cosmos
 ```
 
-Rendered for the current explicit-source Adapter Manager lifecycle:
+Rendered:
 
 ```text
 github.com/FAROTECH:orbitfabric/openc3-cosmos
 ```
 
-The authority identifies the first concrete source context. It does not make FAROTECH the logical publisher and does not define GitHub as a universal OrbitFabric registry.
+First post-migration release:
 
-The source version and Source Coordinate do not by themselves constitute a published release. Release identity is completed only by the exact tag, immutable release assets and their verified byte identities.
+```text
+v0.2.0
+authority = github.com/OrbitFabric
+publisher = orbitfabric
+name      = openc3-cosmos
+```
+
+Rendered:
+
+```text
+github.com/OrbitFabric:orbitfabric/openc3-cosmos
+```
+
+The historical v0.1.0 Source Coordinate remains immutable. The v0.2.0 coordinate records the new physical publication authority while retaining the same logical adapter key.
+
+The source version and Source Coordinate do not by themselves constitute a published release. Release identity is completed only by the exact accepted source, tag, immutable release assets and their verified byte identities.

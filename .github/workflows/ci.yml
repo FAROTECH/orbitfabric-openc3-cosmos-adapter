@@ -7,7 +7,7 @@ on:
       - main
 
 env:
-  ORBITFABRIC_CORE_REPOSITORY: FAROTECH/orbitfabric
+  ORBITFABRIC_CORE_REPOSITORY: OrbitFabric/orbitfabric
   ORBITFABRIC_CORE_REF: b4e1185de4931ff125be699dfe09f63ab3746015
 
 jobs:

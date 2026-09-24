@@ -12,7 +12,7 @@ console command  orbitfabric-openc3-cosmos
 adapter.id       orbitfabric-openc3-cosmos
 integration.id   orbitfabric-openc3-cosmos
 logical key      orbitfabric/openc3-cosmos
-version          0.2.0
+version          0.2.1
 ```
 
 The logical adapter key is unchanged by the GitHub ownership migration.
@@ -23,7 +23,7 @@ Historical first stable release:
 
 ```text
 v0.1.0
-authority = github.com/OrbitFabric
+authority = github.com/FAROTECH
 publisher = orbitfabric
 name      = openc3-cosmos
 ```
@@ -31,7 +31,7 @@ name      = openc3-cosmos
 Rendered:
 
 ```text
-github.com/OrbitFabric:orbitfabric/openc3-cosmos
+github.com/FAROTECH:orbitfabric/openc3-cosmos
 ```
 
 First post-migration release:

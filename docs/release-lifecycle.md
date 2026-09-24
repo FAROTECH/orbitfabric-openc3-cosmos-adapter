@@ -82,7 +82,8 @@ Hosted CI proves source checks, contract behavior, managed lifecycle, product-ex
 
 ```text
 v0.1.0  published / immutable / historical FAROTECH Source Coordinate
-v0.2.0  release preparation / OrbitFabric Source Coordinate / not yet tagged
+v0.2.0  published / immutable / OrbitFabric Source Coordinate
+v0.2.1  unpublished patch candidate / OrbitFabric Source Coordinate
 ```
 
 See [Release Readiness Checklist](adapter-readiness-checklist.md) and [Maintainer / Publisher Guide](publishing.md).

@@ -1,5 +1,7 @@
 # Maintainer / Publisher Guide
 
+Current worktree: unpublished `0.2.1` post-migration candidate. See [release notes](releases/0.2.1.md). Prior release versions below describe historical baselines; new descriptors use `github.com/OrbitFabric`.
+
 Release construction is a maintainer responsibility and is separate from normal adapter consumption.
 
 The source version is `0.2.0`. The immutable `v0.1.0` release remains
@@ -53,7 +55,7 @@ The historical first stable release remains:
 ```text
 v0.1.0
 
-authority = github.com/FAROTECH
+authority = github.com/OrbitFabric
 publisher = orbitfabric
 name      = openc3-cosmos
 ```
@@ -61,7 +63,7 @@ name      = openc3-cosmos
 Rendered:
 
 ```text
-github.com/FAROTECH:orbitfabric/openc3-cosmos
+github.com/OrbitFabric:orbitfabric/openc3-cosmos
 ```
 
 The first post-migration release shall use:

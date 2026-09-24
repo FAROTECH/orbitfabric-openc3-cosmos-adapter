@@ -1,5 +1,7 @@
 # Getting Started
 
+Current worktree: unpublished `0.2.1` post-migration candidate. See [release notes](releases/0.2.1.md). Prior release versions below describe historical baselines; new descriptors use `github.com/OrbitFabric`.
+
 This page describes the **consumer** path.
 
 The normal OrbitFabric user installs a released adapter through Adapter Manager and executes it through Core. Editable source installs and the direct adapter CLI belong to the contributor workflow documented in [Development](development.md).

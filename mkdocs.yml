@@ -1,8 +1,8 @@
 site_name: OrbitFabric OpenC3 COSMOS Adapter
 site_description: User, developer and publisher guide for the OrbitFabric OpenC3 COSMOS adapter.
-site_url: !ENV [ORBITFABRIC_SITE_URL, 'https://farotech.github.io/orbitfabric-openc3-cosmos-adapter/']
-repo_url: !ENV [ORBITFABRIC_REPO_URL, 'https://github.com/FAROTECH/orbitfabric-openc3-cosmos-adapter']
-repo_name: !ENV [ORBITFABRIC_REPO_NAME, 'FAROTECH/orbitfabric-openc3-cosmos-adapter']
+site_url: !ENV [ORBITFABRIC_SITE_URL, 'https://orbitfabric.github.io/orbitfabric-openc3-cosmos-adapter/']
+repo_url: !ENV [ORBITFABRIC_REPO_URL, 'https://github.com/OrbitFabric/orbitfabric-openc3-cosmos-adapter']
+repo_name: !ENV [ORBITFABRIC_REPO_NAME, 'OrbitFabric/orbitfabric-openc3-cosmos-adapter']
 edit_uri: ""
 
 docs_dir: docs

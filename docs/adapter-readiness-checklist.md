@@ -10,7 +10,7 @@ This checklist separates stable source acceptance from immutable publication.
 - [x] historical stable release `v0.1.0` preserved;
 - [x] current release-preparation version set to `0.2.0`;
 - [x] logical key set to `orbitfabric/openc3-cosmos`;
-- [x] historical `v0.1.0` Source Coordinate preserved as `github.com/FAROTECH:orbitfabric/openc3-cosmos`;
+- [x] historical `v0.1.0` Source Coordinate preserved as `github.com/OrbitFabric:orbitfabric/openc3-cosmos`;
 - [x] `v0.2.0` Source Coordinate set to `github.com/OrbitFabric:orbitfabric/openc3-cosmos`.
 
 ## B. Product scope

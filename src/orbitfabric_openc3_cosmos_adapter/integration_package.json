@@ -6,7 +6,7 @@
   },
   "adapter": {
     "id": "orbitfabric-openc3-cosmos",
-    "version": "0.2.0"
+    "version": "0.2.1"
   },
   "core_input_compatibility": {
     "input_set_versions": [
@@ -82,7 +82,7 @@
       "schema_version": "0.1-candidate",
       "format": "json-schema-2020-12",
       "path": "schemas/profile-0.1.schema.json",
-      "sha256": "dbe97d301059b5d0fc2d6b53578e869b95b31c8a5697a117ecd82cd7a6fb1141"
+      "sha256": "7bb1cc44bf3188be1361a22d6d021f614f27716c9af9044de596709be6b6a3a0"
     }
   ],
   "execution": {

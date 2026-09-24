@@ -5,7 +5,7 @@ This page describes the source-development path. It is intentionally separate fr
 ## Development setup
 
 ```bash
-git clone https://github.com/FAROTECH/orbitfabric-openc3-cosmos-adapter.git
+git clone https://github.com/OrbitFabric/orbitfabric-openc3-cosmos-adapter.git
 cd orbitfabric-openc3-cosmos-adapter
 
 python -m venv .venv

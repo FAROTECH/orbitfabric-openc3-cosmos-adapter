@@ -1,5 +1,7 @@
 # Adapter Identity
 
+Current worktree: unpublished `0.2.1` post-migration candidate. See [release notes](releases/0.2.1.md). Prior release versions below describe historical baselines; new descriptors use `github.com/OrbitFabric`.
+
 The current source identity is:
 
 ```text
@@ -21,7 +23,7 @@ Historical first stable release:
 
 ```text
 v0.1.0
-authority = github.com/FAROTECH
+authority = github.com/OrbitFabric
 publisher = orbitfabric
 name      = openc3-cosmos
 ```
@@ -29,7 +31,7 @@ name      = openc3-cosmos
 Rendered:
 
 ```text
-github.com/FAROTECH:orbitfabric/openc3-cosmos
+github.com/OrbitFabric:orbitfabric/openc3-cosmos
 ```
 
 First post-migration release:

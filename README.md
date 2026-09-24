@@ -1,18 +1,20 @@
 # OrbitFabric OpenC3 COSMOS Adapter
 
+Candidate `0.2.1` is unpublished and awaits review. See [candidate release notes](docs/releases/0.2.1.md). New releases use the canonical `github.com/OrbitFabric` authority.
+
 Canonical OrbitFabric adapter for projecting selected mission verification intent toward [OpenC3 COSMOS](https://github.com/OpenC3/cosmos).
 
 OrbitFabric and OpenC3 COSMOS remain independent systems. OrbitFabric Core owns generic mission and integration contracts, this adapter owns COSMOS-specific projection, and COSMOS owns downstream execution semantics and runtime behavior.
 
 > **Release status:** `v0.1.0` is published as an immutable GitHub Release from source commit `1e6f477ba0571996fa72dfd0b719a522dcc84ff1`. The release has passed the native OpenC3 COSMOS acceptance, release proof and published-product evidence declared for the first stable line.
 
-The current source is the `0.2.0` release-preparation line. It adds the generic Scenario Projection\nAccounting artifact. The published `v0.1.0` release remains immutable under its historical\nFAROTECH Source Coordinate; `v0.2.0` will use the OrbitFabric Organization authority after\nits release gates pass.
+The current source prepares patch candidate `0.2.1`. Published `0.2.0` uses the OrbitFabric Organization authority and includes Scenario Projection Accounting. Published `0.1.0` retains its immutable historical FAROTECH Source Coordinate.
 
 ## Choose your path
 
 ### I want to use the adapter
 
-Use the published `v0.1.0` release through **OrbitFabric Adapter Manager**.
+Use the published `v0.2.0` release through **OrbitFabric Adapter Manager**.
 
 ```text
 OrbitFabric Core

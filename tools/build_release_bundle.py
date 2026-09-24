@@ -107,7 +107,7 @@ def parser() -> argparse.ArgumentParser:
         )
     )
     result.add_argument("--wheel", type=Path, required=True)
-    result.add_argument("--authority", required=True)
+    result.add_argument("--authority", default="github.com/OrbitFabric")
     result.add_argument("--publisher", required=True)
     result.add_argument("--name", required=True)
     result.add_argument("--output-dir", type=Path, default=Path("generated/release"))

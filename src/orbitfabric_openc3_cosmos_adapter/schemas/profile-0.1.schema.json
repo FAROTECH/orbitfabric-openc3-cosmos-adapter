@@ -1,5 +1,5 @@
 {
-  "$id": "https://farotech.github.io/orbitfabric-openc3-cosmos-adapter/schemas/profile-0.1.schema.json",
+  "$id": "https://orbitfabric.github.io/orbitfabric-openc3-cosmos-adapter/schemas/profile-0.1.schema.json",
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "OrbitFabric OpenC3 COSMOS Projection Profile",
   "type": "object",

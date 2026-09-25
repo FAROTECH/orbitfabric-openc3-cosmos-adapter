@@ -1,5 +1,7 @@
 # Adapter Identity
 
+Current worktree: unpublished `0.2.1` post-migration candidate. See [release notes](releases/0.2.1.md). Prior release versions below describe historical baselines; new descriptors use `github.com/OrbitFabric`.
+
 The current source identity is:
 
 ```text
@@ -10,7 +12,7 @@ console command  orbitfabric-openc3-cosmos
 adapter.id       orbitfabric-openc3-cosmos
 integration.id   orbitfabric-openc3-cosmos
 logical key      orbitfabric/openc3-cosmos
-version          0.2.0
+version          0.2.1
 ```
 
 The logical adapter key is unchanged by the GitHub ownership migration.

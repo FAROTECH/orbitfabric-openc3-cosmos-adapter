@@ -1,5 +1,7 @@
 # Release Lifecycle
 
+Current worktree: unpublished `0.2.1` post-migration candidate. See [release notes](releases/0.2.1.md). Prior release versions below describe historical baselines; new descriptors use `github.com/OrbitFabric`.
+
 The adapter follows the same product boundary proven by the canonical public OrbitFabric adapters:
 
 ```text
@@ -22,7 +24,7 @@ Historical published release:
 ```text
 version:          0.1.0
 logical key:      orbitfabric/openc3-cosmos
-source authority: github.com/FAROTECH
+source authority: github.com/OrbitFabric
 publisher:        orbitfabric
 name:             openc3-cosmos
 status:           published / immutable
@@ -80,7 +82,8 @@ Hosted CI proves source checks, contract behavior, managed lifecycle, product-ex
 
 ```text
 v0.1.0  published / immutable / historical FAROTECH Source Coordinate
-v0.2.0  release preparation / OrbitFabric Source Coordinate / not yet tagged
+v0.2.0  published / immutable / OrbitFabric Source Coordinate
+v0.2.1  unpublished patch candidate / OrbitFabric Source Coordinate
 ```
 
 See [Release Readiness Checklist](adapter-readiness-checklist.md) and [Maintainer / Publisher Guide](publishing.md).

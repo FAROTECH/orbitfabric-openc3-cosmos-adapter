@@ -1,5 +1,24 @@
 # Getting Started
 
+## Current onboarding candidate
+
+After approved publication of Core 1.4.0, GitHub Release Source 0.1.0 and this adapter 0.2.1, and promotion of its exact descriptor to the Catalog:
+
+```bash
+python3 -m venv .venv
+. .venv/bin/activate
+python -m pip install -r https://github.com/OrbitFabric/orbitfabric/releases/download/v1.4.0/orbitfabric-install.txt
+orbitfabric adapter install openc3-cosmos --version 0.2.1
+orbitfabric adapter list
+orbitfabric adapter verify <instance-id>
+```
+
+These candidate releases are not yet published. The new installed identity is `github.com/OrbitFabric:orbitfabric/openc3-cosmos@0.2.1`. No clone, manual adapter download or Project Lock is required. Use `--catalog-revision <commit-sha>` to pin the Catalog, or `--catalog ./catalog.json` for a local snapshot.
+
+## Historical manual installation reference
+
+The prior-release instructions below preserve the historical baseline. They are not the current canonical onboarding demonstration. Historical FAROTECH Source Coordinates remain immutable.
+
 This page describes the **consumer** path.
 
 The normal OrbitFabric user installs a released adapter through Adapter Manager and executes it through Core. Editable source installs and the direct adapter CLI belong to the contributor workflow documented in [Development](development.md).

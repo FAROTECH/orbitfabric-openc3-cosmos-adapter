@@ -4,8 +4,8 @@ Current worktree: unpublished `0.2.1` post-migration candidate. See [release not
 
 Release construction is a maintainer responsibility and is separate from normal adapter consumption.
 
-The source version is `0.2.0`. The immutable `v0.1.0` release remains
-published under its historical Source Coordinate. The next release is `v0.2.0`
+The source version is `0.2.1`. The immutable `v0.1.0` release remains
+published under its historical Source Coordinate. The next release is `v0.2.1`
 and must complete all release gates before publication.
 
 ## Release ownership
@@ -31,7 +31,7 @@ From the exact accepted stable source commit:
 python -m build --wheel
 
 python tools/build_release_bundle.py \
-  --wheel dist/orbitfabric_openc3_cosmos_adapter-0.2.0-py3-none-any.whl \
+  --wheel dist/orbitfabric_openc3_cosmos_adapter-0.2.1-py3-none-any.whl \
   --authority github.com/OrbitFabric \
   --publisher orbitfabric \
   --name openc3-cosmos \
@@ -41,7 +41,7 @@ python tools/build_release_bundle.py \
 Publisher release material is exactly:
 
 ```text
-orbitfabric_openc3_cosmos_adapter-0.2.0-py3-none-any.whl
+orbitfabric_openc3_cosmos_adapter-0.2.1-py3-none-any.whl
 adapter-release.json
 SHA256SUMS
 ```
@@ -55,7 +55,7 @@ The historical first stable release remains:
 ```text
 v0.1.0
 
-authority = github.com/OrbitFabric
+authority = github.com/FAROTECH
 publisher = orbitfabric
 name      = openc3-cosmos
 ```
@@ -63,10 +63,10 @@ name      = openc3-cosmos
 Rendered:
 
 ```text
-github.com/OrbitFabric:orbitfabric/openc3-cosmos
+github.com/FAROTECH:orbitfabric/openc3-cosmos
 ```
 
-The first post-migration release shall use:
+The first post-migration release uses:
 
 ```text
 v0.2.0
@@ -109,7 +109,7 @@ After exact stable source acceptance:
 
 ```text
 accepted stable main commit
-    -> exact v0.2.0 tag
+    -> exact v0.2.1 tag
     -> definitive wheel
     -> adapter-release.json
     -> SHA256SUMS
